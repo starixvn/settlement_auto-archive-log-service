@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog.bodbAdminNet" />
+
+  <Function Name="NAP_Set_ArchiveDataDel">
+    <Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.bodbAdminNet" />
+    <Setting Key="NAP_Set_ArchiveDataDel_DBSID01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID01.bodb02.bodbAdminNet" />
+    <Setting Key="NAP_Set_ArchiveDataDel_DBSID02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID02.bodb02.bodbAdminNet" />
+  </Function>
+
+  <Function Name="NAP_Set_ArchiveDataSel">
+    <Setting Key="NAP_Set_ArchiveDataSel_DBTXN" SpName="NAP_Set_ArchiveDataSel" DbName="DBTXN.bodb02.bodbAdminNet" />
+    <Setting Key="NAP_Set_ArchiveDataSel_DBSID01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID01.bodb02.bodbAdminNet" />
+    <Setting Key="NAP_Set_ArchiveDataSel_DBSID02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID02.bodb02.bodbAdminNet" />
+  </Function>
+</Functions>
