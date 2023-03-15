@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
-  <Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog.bodbAdminNet" />
+  <Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
 
   <Function Name="NAP_Set_ArchiveDataDel">
     <Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.bodbAdminNet" />
