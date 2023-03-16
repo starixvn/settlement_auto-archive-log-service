@@ -1,4 +1,5 @@
-﻿using AutoArchiveLog.Services;
+﻿using AutoArchiveLog.Models;
+using AutoArchiveLog.Services;
 using Fanex.Caching;
 using Fanex.Data;
 using Fanex.Data.SqlServer;
@@ -6,6 +7,7 @@ using Fanex.Logging;
 using Fanex.Logging.Sentry.RavenClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using ONEbook.UM;
 using ONEbook.UM.AspNetCore;
 using ONEbook.UM.Configurations;
@@ -13,16 +15,26 @@ using ONEbook.UM.Transport;
 using SharpRaven;
 
 namespace AutoArchiveLog.Service;
-public class AutoArchiveLogHostedService : IHostedService, IAsyncDisposable
+public class AutoArchiveLogService : IHostedService, IAsyncDisposable
 {
-    private readonly AutoArchiveLogService autoArchiveLogService;
+    private readonly ArchiveLogService archiveLogService;
+    private readonly IMaintenanceService maintenanceService;
+
     private readonly IConfiguration configuration;
+    private readonly AppSettings appSettings;
     private Timer? timer;
 
-    public AutoArchiveLogHostedService(IConfiguration configuration, AutoArchiveLogService autoArchiveLogService)
+    public AutoArchiveLogService(
+        IConfiguration configuration,
+        ArchiveLogService archiveLogService,
+        IOptions<AppSettings> appSettingsOptions,
+        IMaintenanceService maintenanceService)
     {
         this.configuration = configuration;
-        this.autoArchiveLogService = autoArchiveLogService;
+        this.archiveLogService = archiveLogService;
+        this.maintenanceService = maintenanceService;
+
+        this.appSettings = appSettingsOptions.Value;
 
         InitializeSetting();
     }
@@ -31,15 +43,36 @@ public class AutoArchiveLogHostedService : IHostedService, IAsyncDisposable
     {
         Console.WriteLine($"AutoArchiveLog Starting at {DateTime.Now}");
 
-        timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+        var currentDate = DateTime.Now;
+        var runningDate = DateTime.Today.AddDays(1).AddHours(appSettings.HoursRunning);
+        var firstInterval = 60 / 3600; //(runningDate - currentDate).TotalHours;
+
+        Task.Delay(TimeSpan.FromHours(firstInterval)).Wait();
+
+        timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
 
         return Task.CompletedTask;
     }
 
-    private void DoWork(object? state)
+    private void Process(object? state)
     {
-        //Task.Run(() => autoArchiveLogService.HandleArchiveLogData());
+        if (!maintenanceService.IsMaintenance)
+        {
+            Console.WriteLine($"AutoArchiveLog Running at {DateTime.Now}");
+            MainProcess();
+        }
+    }
 
+    private void MainProcess()
+    {
+        try
+        {
+            Task.Run(() => archiveLogService.HandleArchiveLogData());
+        }
+        catch (Exception ex)
+        {
+            LogService.Error("Fanex.AutoArchiveLog.Service:", ex);
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

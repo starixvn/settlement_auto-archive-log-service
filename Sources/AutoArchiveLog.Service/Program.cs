@@ -12,7 +12,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Services.InitializeServices(builder.Configuration);
 
-builder.Services.AddHostedService<AutoArchiveLogHostedService>();
+builder.Services.AddHostedService<AutoArchiveLogService>();
 
 var app = builder.Build();
 

@@ -4,17 +4,17 @@ using Microsoft.Extensions.Options;
 
 namespace AutoArchiveLog.Services;
 
-public interface AutoArchiveLogService
+public interface ArchiveLogService
 {
     Task HandleArchiveLogData();
 }
-public class AutoArchiveLogServiceImp : AutoArchiveLogService
+public class ArchiveLogServiceImp : ArchiveLogService
 {
     private readonly LogDataRepository dataRepository;
     private readonly AppSettings appSettings;
 
 
-    public AutoArchiveLogServiceImp(LogDataRepository dataRepository, IOptions<AppSettings> appSettingsOption)
+    public ArchiveLogServiceImp(LogDataRepository dataRepository, IOptions<AppSettings> appSettingsOption)
     {
         this.dataRepository = dataRepository;
         this.appSettings = appSettingsOption.Value;
@@ -30,19 +30,13 @@ public class AutoArchiveLogServiceImp : AutoArchiveLogService
 
     private async Task ProccessArchiveLogData(string table, Func<string, Task<List<LogData>>> func)
     {
-        try
+
+        bool runing = false;
+        while (!runing)
         {
-            bool runing = false;
-            while (!runing)
-            {
-                var logs = await func(table);
-                await HandleInsLog(logs);
-                runing = logs.Count == 0;
-            }
-        }
-        catch (Exception)
-        {
-            throw;
+            var logs = await func(table);
+            await HandleInsLog(logs);
+            runing = logs.Count == 0;
         }
     }
 

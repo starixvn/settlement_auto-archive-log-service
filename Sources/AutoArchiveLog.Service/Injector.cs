@@ -16,8 +16,9 @@ public static class Injector
     {
         services.AddSingleton<IDynamicRepository, DynamicRepository>();
 
-        services.AddSingleton<AutoArchiveLogService, AutoArchiveLogServiceImp>();
+        services.AddSingleton<ArchiveLogService, ArchiveLogServiceImp>();
         services.AddSingleton<LogDataRepository, LogDataRepositoryImp>();
+        services.AddTransient<IMaintenanceService, MaintenanceServiceImp>();
 
         services.AddSingleton(new UMClientConfiguration().Initialize(configuration));
         services.AddSingleton<IUMCacheService, UMCacheService>();
