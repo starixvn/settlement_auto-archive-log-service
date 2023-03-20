@@ -13,4 +13,10 @@
     <Setting Key="NAP_Set_ArchiveDataSel_DBSID01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID01.bodb02.bodbAdminNet" />
     <Setting Key="NAP_Set_ArchiveDataSel_DBSID02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID02.bodb02.bodbAdminNet" />
   </Function>
+
+  <Function Name="Get_SiteDBGroupID">
+    <Setting Key="Get_SiteDBGroupID_DBTXN" SpName="Get_SiteDBGroupID" DbName="DBTXN.bodb02.bodbAdminNet" />
+    <Setting Key="Get_SiteDBGroupID_DBSID01" SpName="Get_SiteDBGroupID" DbName="DBSID01.bodb02.bodbAdminNet" />
+    <Setting Key="Get_SiteDBGroupID_DBSID02" SpName="Get_SiteDBGroupID" DbName="DBSID02.bodb02.bodbAdminNet" />
+  </Function>
 </Functions>

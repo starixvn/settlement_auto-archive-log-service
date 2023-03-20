@@ -8,11 +8,11 @@ public interface ArchiveLogService
 {
     Task HandleArchiveLogData();
 }
+
 public class ArchiveLogServiceImp : ArchiveLogService
 {
     private readonly LogDataRepository dataRepository;
     private readonly AppSettings appSettings;
-
 
     public ArchiveLogServiceImp(LogDataRepository dataRepository, IOptions<AppSettings> appSettingsOption)
     {
@@ -22,21 +22,20 @@ public class ArchiveLogServiceImp : ArchiveLogService
 
     public async Task HandleArchiveLogData()
     {
-        foreach (var table in Constants.tableNames)
+        foreach (var table in Constants.Constants.TableNames)
         {
-            await ProccessArchiveLogData(table, GetLogDataFromTable);
+            await ProcessArchiveLogData(table, GetLogDataFromTable);
         }
     }
 
-    private async Task ProccessArchiveLogData(string table, Func<string, Task<List<LogData>>> func)
+    private async Task ProcessArchiveLogData(string table, Func<string, Task<List<LogData>>> func)
     {
-
-        bool runing = false;
-        while (!runing)
+        var running = false;
+        while (!running)
         {
             var logs = await func(table);
             await HandleInsLog(logs);
-            runing = logs.Count == 0;
+            running = logs.Count == 0;
         }
     }
 
@@ -44,8 +43,10 @@ public class ArchiveLogServiceImp : ArchiveLogService
     {
         foreach (var item in logs)
         {
+            var siteDbGroupId = await dataRepository.GetSiteGroupId(item.DbServer);
             await dataRepository.InsLogData(new InsLogDataCriteria
             {
+                SiteDBGroupId = siteDbGroupId,
                 TableName = item.TableName,
                 JsonInfo = item.JsonInfo
             });
@@ -59,7 +60,6 @@ public class ArchiveLogServiceImp : ArchiveLogService
         }
     }
 
-
     private async Task<List<LogData>> GetLogDataFromTable(string tableName)
     {
         var lists = new List<LogData>();
@@ -70,19 +70,14 @@ public class ArchiveLogServiceImp : ArchiveLogService
             {
                 TableName = tableName,
                 DbServer = server,
-                Date = DateTime.Now,
+                Date = DateTime.Today.AddDays(-1),
             };
 
             var results = await dataRepository.GetLogData(criteria);
 
-            if (results.JsonInfo != null)
-            {
-                lists.Add(results);
-            }
+            lists.Add(results);
         }
 
         return lists;
     }
 }
-
-

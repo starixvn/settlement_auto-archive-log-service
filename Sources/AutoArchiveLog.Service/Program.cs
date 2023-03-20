@@ -1,5 +1,4 @@
-﻿
-using AutoArchiveLog.Models;
+﻿using AutoArchiveLog.Models;
 using AutoArchiveLog.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
