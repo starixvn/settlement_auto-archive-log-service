@@ -43,8 +43,10 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
     {
         Console.WriteLine($"AutoArchiveLog Starting at {DateTime.Now}");
 
-        var currentDate = DateTime.Now;
+        var currentDate = DateTime.Now.AddHours(7);
         var runningDate = DateTime.Today.AddHours(appSettings.HoursRunning);
+        Console.WriteLine($"AutoArchiveLog Running at {DateTime.Now}");
+
         var firstInterval = (runningDate - currentDate).TotalHours;
 
         Task.Delay(TimeSpan.FromHours(firstInterval)).Wait();
