@@ -50,11 +50,11 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
         //{
         //    if (runningDate > currentDate)
         //    {
-        //        var firstInterval = (runningDate - currentDate).TotalHours;
+        //var firstInterval = (runningDate - currentDate).TotalHours;
 
-        //        Task.Delay(TimeSpan.FromHours(firstInterval)).Wait();
+        //Task.Delay(TimeSpan.FromHours(firstInterval)).Wait();
 
-        //        timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
+        timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
         //    }
         //}
         //catch (Exception ex)
@@ -69,7 +69,7 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
 
     private void Process(object? state)
     {
-        if (!maintenanceService.IsMaintenance)
+        //if (!maintenanceService.IsMaintenance)
         {
             Console.WriteLine($"AutoArchiveLog Running at {DateTime.Now}");
             MainProcess();
