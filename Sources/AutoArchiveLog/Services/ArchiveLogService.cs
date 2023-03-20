@@ -70,7 +70,7 @@ public class ArchiveLogServiceImp : ArchiveLogService
             {
                 TableName = tableName,
                 DbServer = server,
-                Date = DateTime.Today.AddDays(-1),
+                Date = DateTime.Today.AddDays(-4),
             };
 
             var results = await dataRepository.GetLogData(criteria);
