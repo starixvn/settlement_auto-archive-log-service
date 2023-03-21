@@ -56,6 +56,8 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
                 //Task.Delay(TimeSpan.FromHours(firstInterval)).Wait();
                 //Thread.Sleep(TimeSpan.FromHours(firstInterval));
 
+                Thread.Sleep(TimeSpan.FromMinutes(1));
+
                 timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
             }
         }
