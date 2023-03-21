@@ -44,8 +44,8 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
         Console.WriteLine($"AutoArchiveLog Starting at {DateTime.Now}");
         var currentDate = DateTime.Now;
         //.AddHours(7);
-        var runningDate = DateTime.Today.AddHours(appSettings.HoursRunning);
-        Console.WriteLine($"AutoArchiveLog Begin Running at {runningDate}");
+        //var runningDate = DateTime.Today.AddHours(appSettings.HoursRunning);
+        //Console.WriteLine($"AutoArchiveLog Begin Running at {runningDate}");
 
         try
         {
@@ -57,8 +57,10 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
                 //Thread.Sleep(TimeSpan.FromHours(firstInterval));
 
                 Thread.Sleep(TimeSpan.FromMinutes(1));
+                Console.WriteLine($"Running again {DateTime.Now}");
 
-                timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
+
+                //timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
             }
         }
         catch (Exception ex)
