@@ -75,7 +75,10 @@ public class ArchiveLogServiceImp : ArchiveLogService
 
             var results = await dataRepository.GetLogData(criteria);
 
-            lists.Add(results);
+            if (results.JsonInfo != null)
+            {
+                lists.Add(results);
+            }
         }
 
         return lists;

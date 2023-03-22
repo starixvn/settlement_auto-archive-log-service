@@ -1,5 +1,6 @@
-﻿using AutoArchiveLog.Models;
-using AutoArchiveLog.Services;
+﻿using AutoArchiveLog.Constants;
+using AutoArchiveLog.Models;
+using AutoArchiveLog.Service.Jobs;
 using Fanex.Caching;
 using Fanex.Data;
 using Fanex.Data.SqlServer;
@@ -7,93 +8,55 @@ using Fanex.Logging;
 using Fanex.Logging.Sentry.RavenClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using ONEbook.UM;
 using ONEbook.UM.AspNetCore;
 using ONEbook.UM.Configurations;
 using ONEbook.UM.Transport;
+using Quartz;
+using Quartz.Spi;
 using SharpRaven;
 
 namespace AutoArchiveLog.Service;
-public class AutoArchiveLogService : IHostedService, IAsyncDisposable
+public class AutoArchiveLogService : IHostedService
 {
-    private readonly ArchiveLogService archiveLogService;
-    private readonly IMaintenanceService maintenanceService;
 
     private readonly IConfiguration configuration;
-    private readonly AppSettings appSettings;
-    private Timer? timer;
+    private readonly ISchedulerFactory schedulerFactory;
+    private readonly IJobFactory jobFactory;
 
-    public AutoArchiveLogService(
-        IConfiguration configuration,
-        ArchiveLogService archiveLogService,
-        IOptions<AppSettings> appSettingsOptions,
-        IMaintenanceService maintenanceService)
+    public IScheduler Scheduler { get; set; }
+
+    public AutoArchiveLogService(IConfiguration configuration, ISchedulerFactory schedulerFactory, IJobFactory jobFactory)
     {
         this.configuration = configuration;
-        this.archiveLogService = archiveLogService;
-        this.maintenanceService = maintenanceService;
-
-        this.appSettings = appSettingsOptions.Value;
-
+        this.schedulerFactory = schedulerFactory;
+        this.jobFactory = jobFactory;
         InitializeSetting();
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var currentDate = DateTime.Now.AddHours(7);
-        Console.WriteLine($"AutoArchiveLog Starting at {currentDate}");
-
-        var runningDate = DateTime.Today.AddHours(appSettings.HoursRunning);
-        Console.WriteLine($"AutoArchiveLog Begin Running at {runningDate}");
-
-        try
-        {
-            if (runningDate > currentDate)
-            {
-                var firstInterval = (runningDate - currentDate).TotalHours;
-
-                Thread.Sleep(TimeSpan.FromHours(firstInterval));
-
-                timer = new Timer(Process, null, TimeSpan.Zero, TimeSpan.FromHours(appSettings.HoursInterval));
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"ex at {DateTime.Now}", ex);
-        }
-
-        return Task.CompletedTask;
+        Console.WriteLine($"StartAsync {DateTime.Now}");
+        await CreateScheduler();
+        await RunJobSchedulerAsync();
+        await StartScheduler(cancellationToken);
     }
 
-    private void Process(object? state)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (!maintenanceService.IsMaintenance)
-        {
-            var currentDate = DateTime.Now.AddHours(7);
-            Console.WriteLine($"AutoArchiveLog Running at {currentDate}");
+        Console.WriteLine($"StopAsync {DateTime.Now}");
 
-            MainProcess();
-        }
+        await Scheduler?.Shutdown(cancellationToken)!;
+
     }
 
-    private void MainProcess()
+    private async Task RunJobSchedulerAsync()
     {
-        try
-        {
-            Task.Run(() => archiveLogService.HandleArchiveLogData());
-        }
-        catch (Exception ex)
-        {
-            LogService.Error("Fanex.AutoArchiveLog.Service:", ex);
-        }
-    }
+        Console.WriteLine($"RunJobSchedulerAsync {DateTime.Now}");
+        await AddJobToSchedulerAsync(new JobInfo(typeof(ArchiveLogJob), CronExpressionJob.AutoArchiveLog));
+        //await AddJobToSchedulerAsync(new JobInfo(typeof(HelloJob), "* * * ? * *"));
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        Console.WriteLine($"AutoArchiveLog Stopping at {DateTime.Now}");
-        timer?.Change(Timeout.Infinite, 0);
-        return Task.CompletedTask;
     }
 
     private void InitializeSetting()
@@ -147,13 +110,42 @@ public class AutoArchiveLogService : IHostedService, IAsyncDisposable
         LogManager.SetDefaultLogCategory(configuration.GetSection("SiteCategory").Value).Use(logEngine);
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        if (timer is IAsyncDisposable tempTimer)
-        {
-            await tempTimer.DisposeAsync();
-        }
 
-        timer = null;
+    private async Task CreateScheduler()
+    {
+        Scheduler = await schedulerFactory.GetScheduler();
+        Scheduler.JobFactory = jobFactory;
     }
+
+    private async Task AddJobToSchedulerAsync(JobInfo jobInfo)
+    {
+        var jobDetail = CreateJob(jobInfo);
+
+        var trigger = CreateTrigger(jobInfo);
+
+        await Scheduler.ScheduleJob(jobDetail, trigger);
+    }
+
+    private async Task StartScheduler(CancellationToken cancellationToken)
+    {
+        Console.WriteLine($"StartScheduler {DateTime.Now}");
+
+        await Scheduler.Start(cancellationToken);
+    }
+
+    private ITrigger CreateTrigger(JobInfo jobInfo)
+        => TriggerBuilder
+            .Create()
+            .WithIdentity($"trigger{jobInfo.Type.Name}", $"group{jobInfo.Type.Name}")
+            .WithDescription(jobInfo.Type.Name)
+    .WithCronSchedule(jobInfo.CronExpression)
+            .Build();
+
+    private IJobDetail CreateJob(JobInfo jobInfo)
+        => JobBuilder
+            .Create(jobInfo.Type)
+            .WithIdentity($"sync{jobInfo.Type.Name}", $"group{jobInfo.Type.Name}")
+            .Build();
+
+
 }

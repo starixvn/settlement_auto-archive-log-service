@@ -1,4 +1,5 @@
-﻿using AutoArchiveLog.Services;
+﻿using AutoArchiveLog.Service.Jobs;
+using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Fanex.Settlement.ScaleOut.Services;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,9 @@ using ONEbook.UM.AspNetCore;
 using ONEbook.UM.Configurations;
 using ONEbook.UM.Helpers;
 using ONEbook.UM.Transport;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 namespace AutoArchiveLog.Service;
 public static class Injector
@@ -15,6 +19,8 @@ public static class Injector
     public static void InitializeServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IDynamicRepository, DynamicRepository>();
+        services.AddSingleton<IJobFactory, JobFactory>();
+        services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
         services.AddSingleton<ArchiveLogService, ArchiveLogServiceImp>();
         services.AddSingleton<LogDataRepository, LogDataRepositoryImp>();
@@ -27,5 +33,15 @@ public static class Injector
 
         services.AddTransient<ScaleOutSettleService, ScaleOutSettleServiceImp>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+        services.AddJobsServices();
+    }
+
+    public static IServiceCollection AddJobsServices(this IServiceCollection services)
+    {
+        services.AddTransient<HelloJob>();
+        services.AddTransient<ArchiveLogJob>();
+
+        return services;
     }
 }
