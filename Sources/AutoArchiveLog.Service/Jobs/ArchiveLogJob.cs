@@ -25,6 +25,7 @@ public class ArchiveLogJob : IJob
         catch (Exception ex)
         {
             LogService.Error("Fanex.AutoArchiveLog.Service:", ex);
+            throw;
         }
     }
 }
