@@ -17,14 +17,16 @@ using Quartz.Spi;
 using SharpRaven;
 
 namespace AutoArchiveLog.Service;
+
 public class AutoArchiveLogService : IHostedService
 {
-
     private readonly IConfiguration configuration;
+
     private readonly ISchedulerFactory schedulerFactory;
+
     private readonly IJobFactory jobFactory;
 
-    public IScheduler Scheduler { get; set; }
+    private IScheduler? Scheduler { get; set; }
 
     public AutoArchiveLogService(IConfiguration configuration, ISchedulerFactory schedulerFactory, IJobFactory jobFactory)
     {
@@ -33,7 +35,6 @@ public class AutoArchiveLogService : IHostedService
         this.jobFactory = jobFactory;
         InitializeSetting();
     }
-
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -48,15 +49,13 @@ public class AutoArchiveLogService : IHostedService
         Console.WriteLine($"StopAsync {DateTime.Now}");
 
         await Scheduler?.Shutdown(cancellationToken)!;
-
     }
 
     private async Task RunJobSchedulerAsync()
     {
         Console.WriteLine($"RunJobSchedulerAsync {DateTime.Now}");
-        await AddJobToSchedulerAsync(new JobInfo(typeof(ArchiveLogJob), CronExpressionJob.AutoArchiveLog));
-        //await AddJobToSchedulerAsync(new JobInfo(typeof(HelloJob), "* * * ? * *"));
-
+        var jobInfo = new JobInfo(typeof(ArchiveLogJob), string.Format(CronExpressionJob.AutoArchiveLog, configuration.GetSection("HoursRunning").Value));
+        await AddJobToSchedulerAsync(jobInfo);
     }
 
     private void InitializeSetting()
@@ -65,7 +64,6 @@ public class AutoArchiveLogService : IHostedService
         StartDataBaseSetting();
         StartLogSetting();
     }
-
 
     private void StartUmSetting()
     {
@@ -110,7 +108,6 @@ public class AutoArchiveLogService : IHostedService
         LogManager.SetDefaultLogCategory(configuration.GetSection("SiteCategory").Value).Use(logEngine);
     }
 
-
     private async Task CreateScheduler()
     {
         Scheduler = await schedulerFactory.GetScheduler();
@@ -133,7 +130,7 @@ public class AutoArchiveLogService : IHostedService
         await Scheduler.Start(cancellationToken);
     }
 
-    private ITrigger CreateTrigger(JobInfo jobInfo)
+    private static ITrigger CreateTrigger(JobInfo jobInfo)
         => TriggerBuilder
             .Create()
             .WithIdentity($"trigger{jobInfo.Type.Name}", $"group{jobInfo.Type.Name}")
@@ -141,11 +138,9 @@ public class AutoArchiveLogService : IHostedService
     .WithCronSchedule(jobInfo.CronExpression)
             .Build();
 
-    private IJobDetail CreateJob(JobInfo jobInfo)
+    private static IJobDetail CreateJob(JobInfo jobInfo)
         => JobBuilder
             .Create(jobInfo.Type)
             .WithIdentity($"sync{jobInfo.Type.Name}", $"group{jobInfo.Type.Name}")
             .Build();
-
-
 }

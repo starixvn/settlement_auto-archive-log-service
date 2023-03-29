@@ -9,9 +9,12 @@ public class ArchiveLogJob : IJob
 {
     private readonly ArchiveLogService archiveLogService;
 
-    public ArchiveLogJob(ArchiveLogService archiveLogService)
+    private readonly IMaintenanceService maintenanceService;
+
+    public ArchiveLogJob(ArchiveLogService archiveLogService, IMaintenanceService maintenanceService)
     {
         this.archiveLogService = archiveLogService;
+        this.maintenanceService = maintenanceService;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -20,11 +23,14 @@ public class ArchiveLogJob : IJob
 
         try
         {
-            await archiveLogService.HandleArchiveLogData();
+            if (!maintenanceService.IsMaintenance)
+            {
+                await archiveLogService.HandleArchiveLogData();
+            }
         }
         catch (Exception ex)
         {
-            LogService.Error("Fanex.AutoArchiveLog.Service:", ex);
+            await LogService.ErrorAsync("Fanex.AutoArchiveLog.Service:", ex);
             throw;
         }
     }

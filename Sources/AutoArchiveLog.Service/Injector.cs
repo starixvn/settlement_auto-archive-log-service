@@ -14,6 +14,7 @@ using Quartz.Impl;
 using Quartz.Spi;
 
 namespace AutoArchiveLog.Service;
+
 public static class Injector
 {
     public static void InitializeServices(this IServiceCollection services, IConfiguration configuration)
@@ -37,11 +38,9 @@ public static class Injector
         services.AddJobsServices();
     }
 
-    public static IServiceCollection AddJobsServices(this IServiceCollection services)
+    private static void AddJobsServices(this IServiceCollection services)
     {
         services.AddTransient<HelloJob>();
         services.AddTransient<ArchiveLogJob>();
-
-        return services;
     }
 }

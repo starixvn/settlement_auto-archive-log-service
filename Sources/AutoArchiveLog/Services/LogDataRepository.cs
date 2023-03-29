@@ -1,6 +1,7 @@
 ﻿using AutoArchiveLog.Criteria;
 using AutoArchiveLog.Models;
 using Fanex.Data.Repository;
+using Fanex.Logging;
 
 namespace AutoArchiveLog.Services;
 
@@ -10,7 +11,7 @@ public interface LogDataRepository
 
     Task<LogData> GetLogData(GetLogDataCriteria criteria);
 
-    Task InsLogData(InsLogDataCriteria criteria);
+    Task<bool> InsLogData(InsLogDataCriteria criteria);
 
     Task<int> GetSiteGroupId(string dbServer);
 }
@@ -41,9 +42,18 @@ public class LogDataRepositoryImp : LogDataRepository
         await dynamicRepository.ExecuteAsync(criteria);
     }
 
-    public async Task InsLogData(InsLogDataCriteria criteria)
+    public async Task<bool> InsLogData(InsLogDataCriteria criteria)
     {
-        await dynamicRepository.ExecuteAsync(criteria);
+        try
+        {
+            await dynamicRepository.ExecuteAsync(criteria);
+            return true;
+        }
+        catch (Exception e)
+        {
+            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {criteria.DbServer} - ", e);
+            return false;
+        }
     }
 
     public async Task<int> GetSiteGroupId(string dbServer)
