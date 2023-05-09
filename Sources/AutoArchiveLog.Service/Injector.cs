@@ -40,7 +40,6 @@ public static class Injector
 
     private static void AddJobsServices(this IServiceCollection services)
     {
-        services.AddTransient<HelloJob>();
         services.AddTransient<ArchiveLogJob>();
     }
 }
