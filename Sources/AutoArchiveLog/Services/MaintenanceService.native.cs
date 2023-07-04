@@ -2,6 +2,7 @@
 using ONEbook.UM.Services;
 
 namespace AutoArchiveLog.Services;
+
 public interface IMaintenanceService
 {
     bool IsMaintenance { get; }

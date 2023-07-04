@@ -1,6 +1,6 @@
 ﻿namespace AutoArchiveLog.Models;
 
-public abstract record SiteGroup
+public abstract class SiteGroup
 {
     public int SiteDbGroupId { get; set; }
 }

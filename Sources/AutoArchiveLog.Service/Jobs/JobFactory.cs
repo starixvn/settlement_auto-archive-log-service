@@ -21,5 +21,7 @@ public class JobFactory : IJobFactory
 
     public void ReturnJob(IJob job)
     {
+        var disposable = job as IDisposable;
+        disposable?.Dispose();
     }
 }
