@@ -19,8 +19,6 @@ public class ArchiveLogJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine($"Execute Job {DateTime.Now}");
-
         try
         {
             if (!maintenanceService.IsMaintenance)
