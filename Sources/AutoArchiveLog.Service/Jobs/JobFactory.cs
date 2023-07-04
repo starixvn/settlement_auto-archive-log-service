@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Quartz;
+﻿using Quartz;
 using Quartz.Spi;
 
 namespace AutoArchiveLog.Service.Jobs;
@@ -16,7 +15,13 @@ public class JobFactory : IJobFactory
     public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
         var jobDetail = bundle.JobDetail;
-        return serviceProvider.GetService(jobDetail.JobType) as IJob;
+        var service = serviceProvider.GetService(jobDetail.JobType);
+        if (service == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        return (IJob)service;
     }
 
     public void ReturnJob(IJob job)

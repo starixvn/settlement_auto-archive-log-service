@@ -17,7 +17,7 @@ public class ArchiveLogServiceTest
     {
         var settings = new AppSettings()
         {
-            SiteDbServer = new string[2] { "Local", "PRO" }
+            SiteDbServer = new[] { "Local", "PRO" }
         };
 
         var settingsOptions = Options.Create(settings);
