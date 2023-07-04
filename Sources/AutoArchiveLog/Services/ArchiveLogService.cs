@@ -13,12 +13,12 @@ public interface ArchiveLogService
 
 public class ArchiveLogServiceImp : ArchiveLogService
 {
-    private readonly LogDataRepository dataRepository;
+    private readonly LogDataRepository logDataRepository;
     private readonly AppSettings appSettings;
 
-    public ArchiveLogServiceImp(LogDataRepository dataRepository, IOptions<AppSettings> appSettingsOption)
+    public ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<AppSettings> appSettingsOption)
     {
-        this.dataRepository = dataRepository;
+        this.logDataRepository = logDataRepository;
         this.appSettings = appSettingsOption.Value;
     }
 
@@ -59,34 +59,18 @@ public class ArchiveLogServiceImp : ArchiveLogService
 
     private async Task<bool> InsertLog(LogData log)
     {
-        var siteDbGroupId = await dataRepository.GetSiteGroupId(log.DbServer);
-        var delLogDataCriteria = new DelLogDataCriteria
-        {
-            TableName = log.TableName,
-            JsonInfo = log.JsonInfo,
-            DbServer = log.DbServer
-        };
+        var siteDbGroupId = await logDataRepository.GetSiteGroupId(log.DbServer);
 
-        var insLogDataCriteria = new InsLogDataCriteria
-        {
-            SiteDbGroupId = siteDbGroupId,
-            TableName = log.TableName,
-            JsonInfo = log.JsonInfo,
-            DbServer = Constants.DbLog
-        };
-
-        var mainDbLog = await dataRepository.InsLogData(insLogDataCriteria);
+        var mainDbLog = await logDataRepository.InsMainLogData(siteDbGroupId, log);
 
         if (!mainDbLog)
         {
             return false;
         }
 
-        await dataRepository.DelLogData(delLogDataCriteria);
+        await logDataRepository.DelLogData(log);
 
-        insLogDataCriteria.DbServer = Constants.DbLogStandby;
-
-        return await dataRepository.InsLogData(insLogDataCriteria);
+        return await logDataRepository.InsStandbyLogData(siteDbGroupId, log);
     }
 
     private async Task<List<LogData>> GetLogDataFromTable(string tableName)
@@ -102,7 +86,7 @@ public class ArchiveLogServiceImp : ArchiveLogService
                 Date = DateTime.Today.AddDays(-1),
             };
 
-            var results = await dataRepository.GetLogData(criteria);
+            var results = await logDataRepository.GetLogData(criteria);
 
             if (results.JsonInfo != null)
             {

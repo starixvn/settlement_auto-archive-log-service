@@ -5,13 +5,17 @@ using Fanex.Logging;
 
 namespace AutoArchiveLog.Services;
 
+using Constants;
+
 public interface LogDataRepository
 {
-    Task DelLogData(DelLogDataCriteria criteria);
+    Task DelLogData(LogData log);
 
     Task<LogData> GetLogData(GetLogDataCriteria criteria);
 
-    Task<bool> InsLogData(InsLogDataCriteria criteria);
+    Task<bool> InsMainLogData(int siteDbGroupId, LogData log);
+
+    Task<bool> InsStandbyLogData(int siteDbGroupId, LogData log);
 
     Task<int> GetSiteGroupId(string dbServer);
 }
@@ -37,21 +41,55 @@ public class LogDataRepositoryImp : LogDataRepository
         };
     }
 
-    public async Task DelLogData(DelLogDataCriteria criteria)
+    public async Task DelLogData(LogData log)
     {
+        var criteria = new DelLogDataCriteria
+        {
+            TableName = log.TableName,
+            JsonInfo = log.JsonInfo,
+            DbServer = log.DbServer
+        };
         await dynamicRepository.ExecuteAsync(criteria);
     }
 
-    public async Task<bool> InsLogData(InsLogDataCriteria criteria)
+    public async Task<bool> InsMainLogData(int siteDbGroupId, LogData log)
     {
         try
         {
+            var criteria = new InsLogDataCriteria
+            {
+                SiteDbGroupId = siteDbGroupId,
+                TableName = log.TableName,
+                JsonInfo = log.JsonInfo,
+                DbServer = Constants.DbLog
+            };
             await dynamicRepository.ExecuteAsync(criteria);
             return true;
         }
         catch (Exception e)
         {
-            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {criteria.DbServer} - ", e);
+            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {Constants.DbLog} - ", e);
+            return false;
+        }
+    }
+
+    public async Task<bool> InsStandbyLogData(int siteDbGroupId, LogData log)
+    {
+        try
+        {
+            var criteria = new InsLogDataCriteria
+            {
+                SiteDbGroupId = siteDbGroupId,
+                TableName = log.TableName,
+                JsonInfo = log.JsonInfo,
+                DbServer = Constants.DbLogStandby
+            };
+            await dynamicRepository.ExecuteAsync(criteria);
+            return true;
+        }
+        catch (Exception e)
+        {
+            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {Constants.DbLogStandby} - ", e);
             return false;
         }
     }

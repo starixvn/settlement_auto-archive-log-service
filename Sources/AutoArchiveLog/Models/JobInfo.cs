@@ -1,4 +1,5 @@
 ﻿namespace AutoArchiveLog.Models;
+
 public class JobInfo
 {
     public Type Type { get; set; }
