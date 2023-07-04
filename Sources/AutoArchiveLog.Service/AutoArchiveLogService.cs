@@ -81,7 +81,7 @@ public class AutoArchiveLogService : IHostedService
             .GetChildren()
             .AsEnumerable()
             .ToDictionary(
-                x => x.GetValue<string>("Name"),
+                x => x.GetValue<string>("Name") ?? "",
                 y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName"))
             );
         var spPath = configuration.GetSection("StoredProcedurePath").Value;
@@ -120,14 +120,14 @@ public class AutoArchiveLogService : IHostedService
 
         var trigger = CreateTrigger(jobInfo);
 
-        await Scheduler.ScheduleJob(jobDetail, trigger);
+        await Scheduler!.ScheduleJob(jobDetail, trigger);
     }
 
     private async Task StartScheduler(CancellationToken cancellationToken)
     {
         Console.WriteLine($"StartScheduler {DateTime.Now}");
 
-        await Scheduler.Start(cancellationToken);
+        await Scheduler!.Start(cancellationToken);
     }
 
     private static ITrigger CreateTrigger(JobInfo jobInfo)

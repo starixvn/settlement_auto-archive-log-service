@@ -12,7 +12,7 @@ public class InsLogDataCriteria : NonQueryCommand
 
     public string TableName { get; set; } = string.Empty;
 
-    public byte[]? JsonInfo { get; set; }
+    public byte[] JsonInfo { get; set; }
 
     public override string GetSettingKey() => $"NAP_Set_ArchiveDataIns_{DbServer}";
 

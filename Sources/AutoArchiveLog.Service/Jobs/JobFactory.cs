@@ -1,7 +1,9 @@
-﻿using Quartz;
+﻿using System.Reflection;
+using Quartz;
 using Quartz.Spi;
 
 namespace AutoArchiveLog.Service.Jobs;
+
 public class JobFactory : IJobFactory
 {
     private readonly IServiceProvider serviceProvider;
@@ -19,7 +21,5 @@ public class JobFactory : IJobFactory
 
     public void ReturnJob(IJob job)
     {
-        var disposable = job as IDisposable;
-        disposable?.Dispose();
     }
 }
