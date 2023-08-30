@@ -5,8 +5,6 @@ using Fanex.Logging;
 
 namespace AutoArchiveLog.Services;
 
-using Constants;
-
 public interface LogDataRepository
 {
     Task DelLogData(LogData log);
@@ -14,8 +12,6 @@ public interface LogDataRepository
     Task<LogData> GetLogData(GetLogDataCriteria criteria);
 
     Task<bool> InsMainLogData(int siteDbGroupId, LogData log);
-
-    Task<bool> InsStandbyLogData(int siteDbGroupId, LogData log);
 
     Task<int> GetSiteGroupId(string dbServer);
 }
@@ -60,36 +56,14 @@ public class LogDataRepositoryImp : LogDataRepository
             {
                 SiteDbGroupId = siteDbGroupId,
                 TableName = log.TableName,
-                JsonInfo = log.JsonInfo,
-                DbServer = Constants.DbLog
+                JsonInfo = log.JsonInfo
             };
             await dynamicRepository.ExecuteAsync(criteria);
             return true;
         }
         catch (Exception e)
         {
-            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {Constants.DbLog} - ", e);
-            return false;
-        }
-    }
-
-    public async Task<bool> InsStandbyLogData(int siteDbGroupId, LogData log)
-    {
-        try
-        {
-            var criteria = new InsLogDataCriteria
-            {
-                SiteDbGroupId = siteDbGroupId,
-                TableName = log.TableName,
-                JsonInfo = log.JsonInfo,
-                DbServer = Constants.DbLogStandby
-            };
-            await dynamicRepository.ExecuteAsync(criteria);
-            return true;
-        }
-        catch (Exception e)
-        {
-            await LogService.ErrorAsync($"Fanex.AutoArchiveLog.Service: {Constants.DbLogStandby} - ", e);
+            await LogService.ErrorAsync("Error from AutoArchiveLog Service: NAP_Set_ArchiveDataIns - ", e);
             return false;
         }
     }

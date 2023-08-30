@@ -70,7 +70,7 @@ public class ArchiveLogServiceImp : ArchiveLogService
 
         await logDataRepository.DelLogData(log);
 
-        return await logDataRepository.InsStandbyLogData(siteDbGroupId, log);
+        return true;
     }
 
     private async Task<List<LogData>> GetLogDataFromTable(string tableName)

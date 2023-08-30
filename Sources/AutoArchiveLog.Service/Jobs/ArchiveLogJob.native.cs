@@ -28,7 +28,7 @@ public class ArchiveLogJob : IJob
         }
         catch (Exception ex)
         {
-            await LogService.ErrorAsync("Fanex.AutoArchiveLog.Service:", ex);
+            await LogService.ErrorAsync("Error from AutoArchiveLog Service:", ex);
             throw;
         }
     }

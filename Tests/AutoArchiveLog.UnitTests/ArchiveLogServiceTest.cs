@@ -36,7 +36,6 @@ public class ArchiveLogServiceTest
         await logDataRepository.DidNotReceive().GetSiteGroupId(Arg.Any<string>());
         await logDataRepository.DidNotReceive().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
         await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
-        await logDataRepository.DidNotReceive().InsStandbyLogData(Arg.Any<int>(), Arg.Any<LogData>());
     }
 
     [Fact]
@@ -58,7 +57,6 @@ public class ArchiveLogServiceTest
         await logDataRepository.Received().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
 
         await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
-        await logDataRepository.DidNotReceive().InsStandbyLogData(Arg.Any<int>(), Arg.Any<LogData>());
     }
 
     [Fact]
@@ -73,13 +71,11 @@ public class ArchiveLogServiceTest
         logDataRepository.GetLogData(Arg.Any<GetLogDataCriteria>()).Returns(log);
 
         logDataRepository.InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>()).Returns(true);
-        logDataRepository.InsStandbyLogData(Arg.Any<int>(), Arg.Any<LogData>()).Returns(false);
 
         await service.HandleArchiveLogData();
 
         await logDataRepository.Received().GetSiteGroupId(Arg.Any<string>());
         await logDataRepository.Received().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
         await logDataRepository.Received().DelLogData(Arg.Any<LogData>());
-        await logDataRepository.Received().InsStandbyLogData(Arg.Any<int>(), Arg.Any<LogData>());
     }
 }
