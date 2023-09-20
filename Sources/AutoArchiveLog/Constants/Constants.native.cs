@@ -7,6 +7,5 @@ public static class Constants
 
 public static class CronExpressionJob
 {
-    //public const string AutoArchiveLog = "0 */{0} * ? * *"; //Every 15 minutes ref:https://www.freeformatter.com/cron-expression-generator-quartz.html
     public const string AutoArchiveLog = "0 0 {0} * * ?"; //Every day at 1am ref:https://www.freeformatter.com/cron-expression-generator-quartz.html
 }

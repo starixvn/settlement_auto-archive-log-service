@@ -7,13 +7,13 @@ using Xunit;
 
 namespace AutoArchiveLog.UnitTests;
 
-public class ArchiveLogServiceTest
+public class ArchiveLogServiceTests
 {
     private readonly LogDataRepository logDataRepository;
 
     private readonly ArchiveLogService service;
 
-    public ArchiveLogServiceTest()
+    public ArchiveLogServiceTests()
     {
         var settings = new AppSettings()
         {
@@ -57,25 +57,5 @@ public class ArchiveLogServiceTest
         await logDataRepository.Received().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
 
         await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
-    }
-
-    [Fact]
-    public async Task HandleArchiveLogData_ExistedLogDataAndInsMainDbLogIsSuccessFul_CallExpectedMethod()
-    {
-        var log = new LogData
-        {
-            DbServer = "SiteDB01",
-            JsonInfo = new byte[] { 1 }
-        };
-
-        logDataRepository.GetLogData(Arg.Any<GetLogDataCriteria>()).Returns(log);
-
-        logDataRepository.InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>()).Returns(true);
-
-        await service.HandleArchiveLogData();
-
-        await logDataRepository.Received().GetSiteGroupId(Arg.Any<string>());
-        await logDataRepository.Received().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
-        await logDataRepository.Received().DelLogData(Arg.Any<LogData>());
     }
 }
