@@ -1,5 +1,6 @@
 ﻿using AutoArchiveLog.Models;
 using AutoArchiveLog.Service;
+using Fanex.Data.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,9 +8,11 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<AppSettings>(builder.Configuration);
-
 builder.Services.InitializeServices(builder.Configuration);
+
+builder.Services.AddFanexSql(builder.Configuration);
+
+builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Services.AddHostedService<AutoArchiveLogService>();
 

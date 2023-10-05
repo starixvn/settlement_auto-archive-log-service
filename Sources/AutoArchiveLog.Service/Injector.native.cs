@@ -1,7 +1,6 @@
 ﻿using AutoArchiveLog.Service.Jobs;
 using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
-using Fanex.Settlement.ScaleOut.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +31,6 @@ public static class Injector
         services.AddSingleton<IUMRestClient, UMRestClient>();
         services.AddSingleton<ONEbook.UM.Services.IMaintenanceService, ONEbook.UM.Services.MaintenanceService>();
 
-        services.AddTransient<ScaleOutSettleService, ScaleOutSettleServiceImp>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddJobsServices();

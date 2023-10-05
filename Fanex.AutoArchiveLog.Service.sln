@@ -3,15 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoArchiveLog", "Sources\AutoArchiveLog\AutoArchiveLog.csproj", "{7015C3C8-E9EE-4A21-A587-21C13947F410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoArchiveLog", "Sources\AutoArchiveLog\AutoArchiveLog.csproj", "{7015C3C8-E9EE-4A21-A587-21C13947F410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoArchiveLog.Service", "Sources\AutoArchiveLog.Service\AutoArchiveLog.Service.csproj", "{F138440C-6824-41F1-942A-B278DBC7E9C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoArchiveLog.Service", "Sources\AutoArchiveLog.Service\AutoArchiveLog.Service.csproj", "{F138440C-6824-41F1-942A-B278DBC7E9C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{75F3A90D-7BF6-4079-ACC6-D369F1D60A07}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{AF31B0EF-D2B0-4230-9319-3E1000FC0292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoArchiveLog.UnitTests", "Tests\AutoArchiveLog.UnitTests\AutoArchiveLog.UnitTests.csproj", "{3B3C0AFA-4E43-4860-8C8F-790AC22BDE5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoArchiveLog.UnitTests", "Tests\AutoArchiveLog.UnitTests\AutoArchiveLog.UnitTests.csproj", "{3B3C0AFA-4E43-4860-8C8F-790AC22BDE5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{333322CA-925D-489D-AECB-6B42444CC11A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.gitlab-ci.yml = .gitlab-ci.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

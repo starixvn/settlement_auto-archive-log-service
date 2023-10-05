@@ -12,6 +12,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.3" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\AutoArchiveLog\AutoArchiveLog.csproj" />
 	</ItemGroup>
 

@@ -5,7 +5,7 @@ COPY ./Sources/AutoArchiveLog ./AutoArchiveLog
 COPY ./Sources/AutoArchiveLog.Service/AutoArchiveLog.Service.csproj ./AutoArchiveLog.Service/AutoArchiveLog.Service.csproj
 
 WORKDIR /src/AutoArchiveLog.Service
-RUN dotnet nuget add source http://nuget.nexdev.net/api/v2
+RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
 RUN dotnet restore -v n
 
 COPY ./Sources/AutoArchiveLog.Service .
@@ -18,4 +18,6 @@ WORKDIR /app
 COPY --from=builder /app .
 
 ENV TZ="America/La_Paz"
+ENV COMPlus_EnableDiagnostics=0
+
 ENTRYPOINT ["dotnet", "AutoArchiveLog.Service.dll"]
