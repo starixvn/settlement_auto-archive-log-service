@@ -20,6 +20,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="appsettings.KLDR.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="appsettings.SIT.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
