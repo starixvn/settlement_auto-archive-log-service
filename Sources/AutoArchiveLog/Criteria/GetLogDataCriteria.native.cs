@@ -6,8 +6,10 @@ namespace AutoArchiveLog.Criteria;
 public class GetLogDataCriteria : NonQueryCommand
 {
     public int BatchNo { get; set; } = 2000;
+
     public string TableName { get; set; } = string.Empty;
-    public DateTimeOffset Date { get; set; }
+
+    public DateTime Date { get; set; }
 
     [SpParam(Ignored = true)]
     public string DbServer { get; set; } = string.Empty;

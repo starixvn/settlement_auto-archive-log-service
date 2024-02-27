@@ -9,11 +9,17 @@ public class ArchiveLogJob : IJob
 {
     private readonly ArchiveLogService archiveLogService;
 
+    private readonly ArchiveReportService archiveReportService;
+
     private readonly IMaintenanceService maintenanceService;
 
-    public ArchiveLogJob(ArchiveLogService archiveLogService, IMaintenanceService maintenanceService)
+    public ArchiveLogJob(
+        ArchiveLogService archiveLogService,
+        ArchiveReportService archiveReportService,
+        IMaintenanceService maintenanceService)
     {
         this.archiveLogService = archiveLogService;
+        this.archiveReportService = archiveReportService;
         this.maintenanceService = maintenanceService;
     }
 
@@ -24,6 +30,7 @@ public class ArchiveLogJob : IJob
             if (!maintenanceService.IsMaintenance)
             {
                 await archiveLogService.HandleArchiveLogData();
+                await archiveReportService.HandleArchiveReportData();
             }
         }
         catch (Exception ex)

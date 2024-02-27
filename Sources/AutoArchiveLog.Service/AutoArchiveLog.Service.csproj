@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.3" />
+	  <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.5.3" />
 	</ItemGroup>
 
 	<ItemGroup>
