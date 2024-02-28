@@ -8,15 +8,8 @@ public interface ArchiveReportService
     Task HandleArchiveReportData();
 }
 
-public class ArchiveReportServiceImp : ArchiveReportService
+public class ArchiveReportServiceImp(ReportDataRepository reportDataRepository) : ArchiveReportService
 {
-    private readonly ReportDataRepository reportDataRepository;
-
-    public ArchiveReportServiceImp(ReportDataRepository reportDataRepository)
-    {
-        this.reportDataRepository = reportDataRepository;
-    }
-
     public async Task HandleArchiveReportData()
     {
         var tables = await reportDataRepository.GetSetting();

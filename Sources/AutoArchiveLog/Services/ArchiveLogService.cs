@@ -11,17 +11,9 @@ public interface ArchiveLogService
     Task HandleArchiveLogData();
 }
 
-public class ArchiveLogServiceImp : ArchiveLogService
+public class ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<AppSettings> appSettings)
+    : ArchiveLogService
 {
-    private readonly LogDataRepository logDataRepository;
-    private readonly AppSettings appSettings;
-
-    public ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<AppSettings> appSettingsOption)
-    {
-        this.logDataRepository = logDataRepository;
-        this.appSettings = appSettingsOption.Value;
-    }
-
     public async Task HandleArchiveLogData()
     {
         foreach (var table in Constants.TableNames)
@@ -77,7 +69,7 @@ public class ArchiveLogServiceImp : ArchiveLogService
     {
         var lists = new List<LogData>();
 
-        foreach (var server in appSettings.SiteDbServer)
+        foreach (var server in appSettings.Value.SiteDbServer)
         {
             var criteria = new GetLogDataCriteria
             {

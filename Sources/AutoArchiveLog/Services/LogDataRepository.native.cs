@@ -16,15 +16,8 @@ public interface LogDataRepository
     Task<int> GetSiteGroupId(string dbServer);
 }
 
-public class LogDataRepositoryImp : LogDataRepository
+public class LogDataRepositoryImp(IDynamicRepository dynamicRepository) : LogDataRepository
 {
-    private readonly IDynamicRepository dynamicRepository;
-
-    public LogDataRepositoryImp(IDynamicRepository dynamicRepository)
-    {
-        this.dynamicRepository = dynamicRepository;
-    }
-
     public async Task<LogData> GetLogData(GetLogDataCriteria criteria)
     {
         await dynamicRepository.ExecuteAsync(criteria);

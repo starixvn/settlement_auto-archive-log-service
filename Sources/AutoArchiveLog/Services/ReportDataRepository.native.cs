@@ -13,15 +13,8 @@ public interface ReportDataRepository
     Task InsertData(LogData log);
 }
 
-public class ReportDataRepositoryImp : ReportDataRepository
+public class ReportDataRepositoryImp(IDynamicRepository dynamicRepository) : ReportDataRepository
 {
-    private readonly IDynamicRepository dynamicRepository;
-
-    public ReportDataRepositoryImp(IDynamicRepository dynamicRepository)
-    {
-        this.dynamicRepository = dynamicRepository;
-    }
-
     public async Task<List<ArchiveSetting>> GetSetting()
     {
         var criteria = new GetArchiveSettingCriteria();
