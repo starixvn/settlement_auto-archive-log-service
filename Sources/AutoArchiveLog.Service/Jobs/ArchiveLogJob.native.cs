@@ -5,24 +5,12 @@ using Quartz;
 namespace AutoArchiveLog.Service.Jobs;
 
 [DisallowConcurrentExecution]
-public class ArchiveLogJob : IJob
+public class ArchiveLogJob(
+    ArchiveLogService archiveLogService,
+    ArchiveReportService archiveReportService,
+    IMaintenanceService maintenanceService)
+    : IJob
 {
-    private readonly ArchiveLogService archiveLogService;
-
-    private readonly ArchiveReportService archiveReportService;
-
-    private readonly IMaintenanceService maintenanceService;
-
-    public ArchiveLogJob(
-        ArchiveLogService archiveLogService,
-        ArchiveReportService archiveReportService,
-        IMaintenanceService maintenanceService)
-    {
-        this.archiveLogService = archiveLogService;
-        this.archiveReportService = archiveReportService;
-        this.maintenanceService = maintenanceService;
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
         try

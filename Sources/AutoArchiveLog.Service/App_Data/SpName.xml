@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
 	<Function Name="ArchiveData_Weekly_Report">
-		<Setting Key="ArchiveService_Setting_Sel" SpName="ArchiveService_Setting_Sel" DbName="DBARC.bodb_Archive.bodbAdminNet" />
-		<Setting Key="ArchiveService_Ins" SpName="ArchiveService_Ins" DbName="DBARC.bodb_Archive.bodbAdminNet" />
+		<Setting Key="ArchiveService_Setting_Sel" SpName="ArchiveService_Setting_Sel" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
+		<Setting Key="ArchiveService_Ins" SpName="ArchiveService_Ins" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
 		<Setting Key="ArchiveService_Sel" SpName="ArchiveService_Sel" DbName="DBPRO.bodb02.bodbAdminNet" />
 	</Function>
 

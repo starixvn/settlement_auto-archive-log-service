@@ -29,7 +29,9 @@ public class ArchiveReportServiceImp(ReportDataRepository reportDataRepository) 
             {
                 await reportDataRepository.InsertData(logs);
             }
-
+            var tables = await reportDataRepository.GetSetting();
+            var newArchiveValue = tables.Find(i => i.ArchiveName.Equals(setting.ArchiveName)).ArchiveValue;
+            setting.ArchiveValue = newArchiveValue;
             running = logs.JsonInfo == null;
         }
     }
