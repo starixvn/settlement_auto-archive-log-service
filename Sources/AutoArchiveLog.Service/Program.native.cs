@@ -4,7 +4,6 @@ using Fanex.Data.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +17,9 @@ builder.Services.AddHostedService<AutoArchiveLogService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.Run(async context =>
 {
-    app.UseDeveloperExceptionPage();
-}
+    await context.Response.WriteAsync("OK");
+});
 
-app.UseRouting();
-
-app.MapGet("/",
-        async context => { await context.Response.WriteAsync("Fanex.AutoArchiveLog.Service"); });
-
-#if DEBUG
 app.Run();
-#else
-await app.RunAsync("http://0.0.0.0:5000");
-#endif

@@ -23,7 +23,9 @@ public static class Injector
         services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
         services.AddSingleton<ArchiveLogService, ArchiveLogServiceImp>();
+        services.AddSingleton<ArchiveReportService, ArchiveReportServiceImp>();
         services.AddSingleton<LogDataRepository, LogDataRepositoryImp>();
+        services.AddSingleton<ReportDataRepository, ReportDataRepositoryImp>();
         services.AddTransient<IMaintenanceService, MaintenanceServiceImp>();
 
         services.AddSingleton(new UMClientConfiguration().Initialize(configuration));

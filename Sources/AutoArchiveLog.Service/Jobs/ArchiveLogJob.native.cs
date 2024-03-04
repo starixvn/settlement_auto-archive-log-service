@@ -5,18 +5,12 @@ using Quartz;
 namespace AutoArchiveLog.Service.Jobs;
 
 [DisallowConcurrentExecution]
-public class ArchiveLogJob : IJob
+public class ArchiveLogJob(
+    ArchiveLogService archiveLogService,
+    ArchiveReportService archiveReportService,
+    IMaintenanceService maintenanceService)
+    : IJob
 {
-    private readonly ArchiveLogService archiveLogService;
-
-    private readonly IMaintenanceService maintenanceService;
-
-    public ArchiveLogJob(ArchiveLogService archiveLogService, IMaintenanceService maintenanceService)
-    {
-        this.archiveLogService = archiveLogService;
-        this.maintenanceService = maintenanceService;
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
         try
@@ -24,6 +18,7 @@ public class ArchiveLogJob : IJob
             if (!maintenanceService.IsMaintenance)
             {
                 await archiveLogService.HandleArchiveLogData();
+                await archiveReportService.HandleArchiveReportData();
             }
         }
         catch (Exception ex)
