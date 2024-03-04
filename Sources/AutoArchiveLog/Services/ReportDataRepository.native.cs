@@ -10,7 +10,7 @@ public interface ReportDataRepository
 
     Task<LogData> GetData(GetArchiveDataCriteria criteria);
 
-    Task InsertData(LogData log);
+    Task<Result> InsertData(LogData log);
 }
 
 public class ReportDataRepositoryImp(IDynamicRepository dynamicRepository) : ReportDataRepository
@@ -32,7 +32,7 @@ public class ReportDataRepositoryImp(IDynamicRepository dynamicRepository) : Rep
         };
     }
 
-    public async Task InsertData(LogData log)
+    public async Task<Result> InsertData(LogData log)
     {
         var criteria = new InsArchiveDataCriteria
         {
@@ -40,5 +40,11 @@ public class ReportDataRepositoryImp(IDynamicRepository dynamicRepository) : Rep
             JsonInfo = log.JsonInfo
         };
         await dynamicRepository.ExecuteAsync(criteria);
+
+        return new Result
+        {
+            ErrorCode = criteria.ErrCode,
+            ErrorMessage = criteria.ErrMsg
+        };
     }
 }

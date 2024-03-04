@@ -1,5 +1,6 @@
 ﻿using AutoArchiveLog.Criteria;
 using AutoArchiveLog.Models;
+using Fanex.Logging;
 
 namespace AutoArchiveLog.Services;
 
@@ -22,18 +23,37 @@ public class ArchiveReportServiceImp(ReportDataRepository reportDataRepository) 
     private async Task ProcessArchiveReportData(ArchiveSetting setting, Func<ArchiveSetting, Task<LogData>> func)
     {
         var running = false;
-        while (!running)
+        var result = true;
+
+        while (!running && result)
         {
             var logs = await func(setting);
-            if (logs.JsonInfo != null)
-            {
-                await reportDataRepository.InsertData(logs);
-            }
+
+            result = await HandleInsLog(logs);
+
             var tables = await reportDataRepository.GetSetting();
             var newArchiveValue = tables.Find(i => i.ArchiveName.Equals(setting.ArchiveName)).ArchiveValue;
             setting.ArchiveValue = newArchiveValue;
             running = logs.JsonInfo == null;
         }
+    }
+
+    private async Task<bool> HandleInsLog(LogData logs)
+    {
+        if (logs.JsonInfo == null)
+        {
+            return true;
+        }
+
+        var result = await reportDataRepository.InsertData(logs);
+        if (result.ErrorCode > 0)
+        {
+            await LogService.ErrorAsync("Error from AutoArchiveLog Service: ArchiveService_Ins - ",
+                result.ErrorMessage);
+            return false;
+        }
+
+        return true;
     }
 
     private async Task<LogData> GetDataFromTable(ArchiveSetting setting)
