@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
 	<Function Name="ArchiveData_Weekly_Report">
-		<Setting Key="ArchiveService_Setting_Sel" SpName="ArchiveService_Setting_Sel" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
-		<Setting Key="ArchiveService_Ins" SpName="ArchiveService_Ins" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
-		<Setting Key="ArchiveService_Sel" SpName="ArchiveService_Sel" DbName="DBPRO.bodb02.bodbAdminNet" />
+		<Setting Key="ArchiveService_Setting_Sel" SpName="ArchiveService_Setting_Sel" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
+		<Setting Key="ArchiveService_Ins" SpName="ArchiveService_Ins" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
+		<Setting Key="ArchiveService_Sel" SpName="ArchiveService_Sel" DbName="DBPRO.bodb02.wsv_nap" />
 	</Function>
 
 	<Function Name="ArchiveData_Log">
 		<Function Name="NAP_Set_ArchiveDataIns">
-			<Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog_archive.bodbAdminNet" />
+			<Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
 		</Function>
 
 		<Function Name="NAP_Set_ArchiveDataDel">
-			<Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID01.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID02.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID03" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID03.bodb02.bodbAdminNet" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSID01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID01.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSID02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID02.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSID03" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID03.bodb02.wsv_nap" />
 		</Function>
 
 		<Function Name="NAP_Set_ArchiveDataSel">
-			<Setting Key="NAP_Set_ArchiveDataSel_DBTXN" SpName="NAP_Set_ArchiveDataSel" DbName="DBTXN.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID01.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID02.bodb02.bodbAdminNet" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID03" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID03.bodb02.bodbAdminNet" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBTXN" SpName="NAP_Set_ArchiveDataSel" DbName="DBTXN.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSID01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID01.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSID02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID02.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSID03" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID03.bodb02.wsv_nap" />
 		</Function>
 
 		<Function Name="Get_SiteDBGroupID">
-			<Setting Key="Get_SiteDBGroupID_DBTXN" SpName="Get_SiteDBGroupID" DbName="DBTXN.bodb02.bodbAdminNet" />
-			<Setting Key="Get_SiteDBGroupID_DBSID01" SpName="Get_SiteDBGroupID" DbName="DBSID01.bodb02.bodbAdminNet" />
-			<Setting Key="Get_SiteDBGroupID_DBSID02" SpName="Get_SiteDBGroupID" DbName="DBSID02.bodb02.bodbAdminNet" />
-			<Setting Key="Get_SiteDBGroupID_DBSID03" SpName="Get_SiteDBGroupID" DbName="DBSID03.bodb02.bodbAdminNet" />
+			<Setting Key="Get_SiteDBGroupID_DBTXN" SpName="Get_SiteDBGroupID" DbName="DBTXN.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSID01" SpName="Get_SiteDBGroupID" DbName="DBSID01.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSID02" SpName="Get_SiteDBGroupID" DbName="DBSID02.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSID03" SpName="Get_SiteDBGroupID" DbName="DBSID03.bodb02.wsv_nap" />
 		</Function>
 	</Function>
 </Functions>
