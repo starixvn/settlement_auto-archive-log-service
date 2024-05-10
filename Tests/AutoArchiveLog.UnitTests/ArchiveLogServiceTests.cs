@@ -44,7 +44,7 @@ public class ArchiveLogServiceTests
         var log = new LogData
         {
             DbServer = "SiteDB01",
-            JsonInfo = new byte[] { 1 }
+            JsonInfo = [1]
         };
 
         logDataRepository.GetLogData(Arg.Any<GetLogDataCriteria>()).Returns(log);
