@@ -1,7 +1,5 @@
-using AutoArchiveLog.Criteria;
 using AutoArchiveLog.Models;
 using AutoArchiveLog.Services;
-using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -9,53 +7,45 @@ namespace AutoArchiveLog.UnitTests;
 
 public class ArchiveLogServiceTests
 {
-    private readonly LogDataRepository logDataRepository;
+    private readonly InsertLogService insertLogService;
 
     private readonly ArchiveLogService service;
 
     public ArchiveLogServiceTests()
     {
-        var settings = new AppSettings()
-        {
-            SiteDbServer = new[] { "Local", "PRO" }
-        };
-
-        var settingsOptions = Options.Create(settings);
-        logDataRepository = Substitute.For<LogDataRepository>();
-        service = new ArchiveLogServiceImp(logDataRepository, settingsOptions);
+        insertLogService = Substitute.For<InsertLogService>();
+        service = new ArchiveLogServiceImp(insertLogService);
     }
 
     [Fact]
-    public async Task HandleArchiveLogData_LogDataIsEmptied_NotCallInsLogData()
+    public async Task HandleArchiveLogData_LogDataIsEmptied_NotCallInsLogAndBreakWhile()
     {
-        var log = new LogData();
-        logDataRepository.GetLogData(Arg.Any<GetLogDataCriteria>()).Returns(log);
+        var logs = new List<LogData>();
+        insertLogService.GetLogDataFromTable(Arg.Any<string>()).Returns(logs);
 
         await service.HandleArchiveLogData();
 
-        await logDataRepository.DidNotReceive().GetSiteGroupId(Arg.Any<string>());
-        await logDataRepository.DidNotReceive().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
-        await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
+        await insertLogService.DidNotReceive().InsertLog(Arg.Any<LogData>());
     }
 
     [Fact]
-    public async Task HandleArchiveLogData_ExistedLogDataAndInsMainDbLogIsFail_CallExpectedMethod()
+    public async Task HandleArchiveLogData_ExistedLogDataAndInsMainDbLogIsFail_CallInsertLogAndBreakWhile()
     {
-        var log = new LogData
+        var logs = new List<LogData>
         {
-            DbServer = "SiteDB01",
-            JsonInfo = [1]
+            new()
+            {
+                DbServer = "SiteDB01",
+                JsonInfo = [1]
+            }
         };
 
-        logDataRepository.GetLogData(Arg.Any<GetLogDataCriteria>()).Returns(log);
+        insertLogService.GetLogDataFromTable(Arg.Any<string>()).Returns(logs);
 
-        logDataRepository.InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>()).Returns(false);
+        insertLogService.InsertLog(Arg.Any<LogData>()).Returns(false);
 
         await service.HandleArchiveLogData();
 
-        await logDataRepository.Received().GetSiteGroupId(Arg.Any<string>());
-        await logDataRepository.Received().InsMainLogData(Arg.Any<int>(), Arg.Any<LogData>());
-
-        await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
+        await insertLogService.Received().InsertLog(Arg.Any<LogData>());
     }
 }

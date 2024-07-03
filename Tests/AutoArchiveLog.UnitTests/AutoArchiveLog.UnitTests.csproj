@@ -9,6 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.DEV.json" Link="appsettings.DEV.json" />
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.KLDR.json" Link="appsettings.KLDR.json" />
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.LOCAL.json" Link="appsettings.LOCAL.json" />
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.PROD.json" Link="appsettings.PROD.json" />
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.SIT.json" Link="appsettings.SIT.json" />
+    <Content Include="..\..\Sources\AutoArchiveLog.Service\appsettings.UAT.json" Link="appsettings.UAT.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="xunit" Version="2.7.0" />

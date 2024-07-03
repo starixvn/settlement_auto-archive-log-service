@@ -1,6 +1,4 @@
-﻿using AutoArchiveLog.Criteria;
-using AutoArchiveLog.Models;
-using Microsoft.Extensions.Options;
+﻿using AutoArchiveLog.Models;
 
 namespace AutoArchiveLog.Services;
 
@@ -11,14 +9,14 @@ public interface ArchiveLogService
     Task HandleArchiveLogData();
 }
 
-public class ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<AppSettings> appSettings)
+public class ArchiveLogServiceImp(InsertLogService insertLogService)
     : ArchiveLogService
 {
     public async Task HandleArchiveLogData()
     {
         foreach (var table in Constants.TableNames)
         {
-            await ProcessArchiveLogData(table, GetLogDataFromTable);
+            await ProcessArchiveLogData(table, insertLogService.GetLogDataFromTable);
         }
     }
 
@@ -38,7 +36,7 @@ public class ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<
     {
         foreach (var item in logs)
         {
-            var result = await InsertLog(item);
+            var result = await insertLogService.InsertLog(item);
 
             if (!result)
             {
@@ -47,45 +45,5 @@ public class ArchiveLogServiceImp(LogDataRepository logDataRepository, IOptions<
         }
 
         return true;
-    }
-
-    private async Task<bool> InsertLog(LogData log)
-    {
-        var siteDbGroupId = await logDataRepository.GetSiteGroupId(log.DbServer);
-
-        var mainDbLog = await logDataRepository.InsMainLogData(siteDbGroupId, log);
-
-        if (!mainDbLog)
-        {
-            return false;
-        }
-
-        await logDataRepository.DelLogData(log);
-
-        return true;
-    }
-
-    private async Task<List<LogData>> GetLogDataFromTable(string tableName)
-    {
-        var lists = new List<LogData>();
-
-        foreach (var server in appSettings.Value.SiteDbServer)
-        {
-            var criteria = new GetLogDataCriteria
-            {
-                TableName = tableName,
-                DbServer = server,
-                Date = DateTimeOffset.Now.AddDays(-1).Date,
-            };
-
-            var results = await logDataRepository.GetLogData(criteria);
-
-            if (results.JsonInfo != null)
-            {
-                lists.Add(results);
-            }
-        }
-
-        return lists;
     }
 }
