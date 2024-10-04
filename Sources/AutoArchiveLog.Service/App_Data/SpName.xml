@@ -13,23 +13,23 @@
 
 		<Function Name="NAP_Set_ArchiveDataDel">
 			<Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID01.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID02.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSID03" SpName="NAP_Set_ArchiveDataDel" DbName="DBSID03.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE01.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE02.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE03" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE03.bodb02.wsv_nap" />
 		</Function>
 
 		<Function Name="NAP_Set_ArchiveDataSel">
 			<Setting Key="NAP_Set_ArchiveDataSel_DBTXN" SpName="NAP_Set_ArchiveDataSel" DbName="DBTXN.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID01.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID02.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataSel_DBSID03" SpName="NAP_Set_ArchiveDataSel" DbName="DBSID03.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSITE01" SpName="NAP_Set_ArchiveDataSel" DbName="DBSITE01.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSITE02" SpName="NAP_Set_ArchiveDataSel" DbName="DBSITE02.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSel_DBSITE03" SpName="NAP_Set_ArchiveDataSel" DbName="DBSITE03.bodb02.wsv_nap" />
 		</Function>
 
 		<Function Name="Get_SiteDBGroupID">
 			<Setting Key="Get_SiteDBGroupID_DBTXN" SpName="Get_SiteDBGroupID" DbName="DBTXN.bodb02.wsv_nap" />
-			<Setting Key="Get_SiteDBGroupID_DBSID01" SpName="Get_SiteDBGroupID" DbName="DBSID01.bodb02.wsv_nap" />
-			<Setting Key="Get_SiteDBGroupID_DBSID02" SpName="Get_SiteDBGroupID" DbName="DBSID02.bodb02.wsv_nap" />
-			<Setting Key="Get_SiteDBGroupID_DBSID03" SpName="Get_SiteDBGroupID" DbName="DBSID03.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSITE01" SpName="Get_SiteDBGroupID" DbName="DBSITE01.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSITE02" SpName="Get_SiteDBGroupID" DbName="DBSITE02.bodb02.wsv_nap" />
+			<Setting Key="Get_SiteDBGroupID_DBSITE03" SpName="Get_SiteDBGroupID" DbName="DBSITE03.bodb02.wsv_nap" />
 		</Function>
 	</Function>
 </Functions>
