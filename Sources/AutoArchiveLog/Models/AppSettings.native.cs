@@ -2,5 +2,5 @@
 
 public class AppSettings
 {
-    public string[] SiteDbServer { get; set; } = { };
+    public string[] SiteDbServer { get; set; } = [];
 }

@@ -2,9 +2,10 @@
 using Fanex.Logging;
 using Fanex.Logging.Extensions;
 using Fanex.Logging.Extensions.Database;
+using ONEbook.UM.Services;
 using Quartz;
 
-namespace AutoArchiveLog.Service.Jobs;
+namespace AutoArchiveLog.Worker.Jobs;
 
 [DisallowConcurrentExecution]
 public class ArchiveLogJob(
@@ -15,9 +16,11 @@ public class ArchiveLogJob(
 {
     public async Task Execute(IJobExecutionContext context)
     {
+        await LogService.InfoAsync($"Start Archive Log Job at {DateTime.Now}");
         try
         {
-            if (!maintenanceService.IsMaintenance)
+            var isMaintenance = await maintenanceService.IsUnderMaintenanceAsync();
+            if (!isMaintenance)
             {
                 await archiveLogService.HandleArchiveLogData();
                 await archiveReportService.HandleArchiveReportData();
