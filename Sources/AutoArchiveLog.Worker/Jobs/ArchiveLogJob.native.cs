@@ -16,7 +16,6 @@ public class ArchiveLogJob(
 {
     public async Task Execute(IJobExecutionContext context)
     {
-        await LogService.InfoAsync($"Start Archive Log Job at {DateTime.Now}");
         try
         {
             var isMaintenance = await maintenanceService.IsUnderMaintenanceAsync();

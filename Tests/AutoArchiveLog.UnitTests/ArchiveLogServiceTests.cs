@@ -35,7 +35,7 @@ public class ArchiveLogServiceTests
         {
             new()
             {
-                DbServer = "SiteDB01",
+                DbServer = "DBSITE01",
                 JsonInfo = [1]
             }
         };

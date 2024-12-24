@@ -1,6 +1,7 @@
 ﻿using AutoArchiveLog;
 using AutoArchiveLog.Models;
 using AutoArchiveLog.Worker.Jobs;
+using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
 using ONEbook.UM.DependencyInjection;
 using Quartz;
@@ -25,7 +26,6 @@ builder.Services.AddQuartz(q =>
             .WithIdentity(job.TriggerName)
             .WithCronSchedule(job.CronExpression));
     }
-
 });
 
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
@@ -33,6 +33,8 @@ builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 builder.Services.AddOneBookUm(builder.Configuration);
 
 builder.Services.AddFanexLogSentry(builder.Configuration);
+
+builder.Services.AddFanexSql(builder.Configuration);
 
 builder.AddAutoArchiveLog();
 

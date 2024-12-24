@@ -54,7 +54,7 @@ public class InsertLogServiceTest
     {
         var log = new LogData
         {
-            DbServer = "SiteDB01",
+            DbServer = "DBSITE01",
             JsonInfo = [1]
         };
 
@@ -70,7 +70,7 @@ public class InsertLogServiceTest
     {
         var log = new LogData
         {
-            DbServer = "SiteDB01",
+            DbServer = "DBSITE01",
             JsonInfo = null
         };
 
