@@ -1,3 +1,4 @@
+using AutoArchiveLog.Constants;
 using AutoArchiveLog.Features.SyncProvider;
 using AutoArchiveLog.Models;
 using AutoArchiveLog.Services;
@@ -41,7 +42,7 @@ public class SyncProviderHandlerTests
         {
             new() { ArchiveName = "TestTable", ArchiveValue = "0" }
         };
-        reportDataRepository.GetSetting("DBARC").Returns(Task.FromResult(archiveSettings));
+        reportDataRepository.GetSetting(DatabaseName.DBARC).Returns(Task.FromResult(archiveSettings));
 
         var updatedArchiveSettings = new List<ArchiveSetting>
         {
@@ -70,23 +71,22 @@ public class SyncProviderHandlerTests
         await handler.Handle();
 
         // Assert
-        await reportDataRepository.Received(1).GetSetting("DBARC");
+        await reportDataRepository.Received(3).GetSetting(DatabaseName.DBARC);
         await dynamicRepository.Received(2).ExecuteAsync(Arg.Any<GetProviderResultCriteria>());
         await dynamicRepository.Received(1).ExecuteAsync(Arg.Any<InsProviderResultCriteria>());
-        await reportDataRepository.Received(2).GetSetting();
     }
 
     [Fact]
     public async Task Handle_WhenNoSettings_ShouldNotRun()
     {
         // Arrange
-        reportDataRepository.GetSetting("DBARC").Returns(Task.FromResult(new List<ArchiveSetting>()));
+        reportDataRepository.GetSetting(DatabaseName.DBARC).Returns(Task.FromResult(new List<ArchiveSetting>()));
 
         // Act
         await handler.Handle();
 
         // Assert
-        await reportDataRepository.Received(1).GetSetting("DBARC");
+        await reportDataRepository.Received(1).GetSetting(DatabaseName.DBARC);
         await dynamicRepository.DidNotReceive().ExecuteAsync(Arg.Any<GetProviderResultCriteria>());
         await dynamicRepository.DidNotReceive().ExecuteAsync(Arg.Any<InsProviderResultCriteria>());
     }
@@ -99,7 +99,7 @@ public class SyncProviderHandlerTests
         {
             new() { ArchiveName = "TestTable", ArchiveValue = "0" }
         };
-        reportDataRepository.GetSetting("DBARC").Returns(Task.FromResult(archiveSettings));
+        reportDataRepository.GetSetting(DatabaseName.DBARC).Returns(Task.FromResult(archiveSettings));
         reportDataRepository.GetSetting().Returns(Task.FromResult(archiveSettings));
 
         dynamicRepository
@@ -123,10 +123,8 @@ public class SyncProviderHandlerTests
         await handler.Handle();
 
         // Assert
-        await reportDataRepository.Received(1).GetSetting("DBARC");
         await dynamicRepository.Received(1).ExecuteAsync(Arg.Any<GetProviderResultCriteria>());
         await dynamicRepository.Received(1).ExecuteAsync(Arg.Any<InsProviderResultCriteria>());
-        await reportDataRepository.Received(1).GetSetting("DBARC");
-        await reportDataRepository.Received(1).GetSetting();
+        await reportDataRepository.Received(2).GetSetting(DatabaseName.DBARC);
     }
 }
