@@ -6,7 +6,7 @@ namespace AutoArchiveLog.Services;
 
 public interface ReportDataRepository
 {
-    Task<List<ArchiveSetting>> GetSetting();
+    Task<List<ArchiveSetting>> GetSetting(string dbServer = "");
 
     Task<LogData> GetData(GetArchiveDataCriteria criteria);
 
@@ -15,9 +15,12 @@ public interface ReportDataRepository
 
 public class ReportDataRepositoryImp(IDynamicRepository dynamicRepository) : ReportDataRepository
 {
-    public async Task<List<ArchiveSetting>> GetSetting()
+    public async Task<List<ArchiveSetting>> GetSetting(string dbServer = "")
     {
-        var criteria = new GetArchiveSettingCriteria();
+        var criteria = new GetArchiveSettingCriteria
+        {
+            DbServer = dbServer
+        };
         return (await dynamicRepository.FetchAsync<ArchiveSetting>(criteria)).ToList();
     }
 

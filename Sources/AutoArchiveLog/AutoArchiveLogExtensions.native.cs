@@ -1,4 +1,5 @@
-﻿using AutoArchiveLog.Services;
+﻿using AutoArchiveLog.Features.SyncProvider;
+using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 
@@ -14,7 +15,8 @@ public static class AutoArchiveLogExtensions
             .AddSingleton<InsertLogService, InsertLogServiceImp>()
             .AddSingleton<ArchiveReportService, ArchiveReportServiceImp>()
             .AddSingleton<LogDataRepository, LogDataRepositoryImp>()
-            .AddSingleton<ReportDataRepository, ReportDataRepositoryImp>();
+            .AddSingleton<ReportDataRepository, ReportDataRepositoryImp>()
+            .AddSingleton<ISyncProviderHandler, SyncProviderHandler>();
 
         return builder;
     }
