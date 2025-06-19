@@ -1,6 +1,7 @@
 ﻿using AutoArchiveLog.Models;
 using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
+using Fanex.Logging;
 
 namespace AutoArchiveLog.Features.SyncProvider;
 
@@ -13,18 +14,17 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
 {
     public async Task Handle()
     {
-        var archiveSettings = await reportDataRepository.GetSetting("DBACC");
+        var archiveSettings = await reportDataRepository.GetSetting("DBARC");
         foreach (var item in archiveSettings)
         {
-            await ProccessSyncProviderResult(item);
+            await ProcessSyncProviderResult(item);
         }
     }
 
-    private async Task ProccessSyncProviderResult(ArchiveSetting archiveSetting)
+    private async Task ProcessSyncProviderResult(ArchiveSetting archiveSetting)
     {
         var running = false;
-        var result = true;
-        while (!running && result)
+        while (!running)
         {
             var providerResult = await GetProviderResults(archiveSetting);
 
@@ -55,8 +55,13 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
         };
     }
 
-    private async Task<bool> InsertProviderResult(LogData log)
+    private async Task InsertProviderResult(LogData log)
     {
+        if (log.JsonInfo == null)
+        {
+            return;
+        }
+
         var criteria = new InsProviderResultCriteria
         {
             TableName = log.TableName,
@@ -64,6 +69,10 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
         };
         await dynamicRepository.ExecuteAsync(criteria);
 
-        return criteria.ErrCode == 0;
+        if (criteria.ErrCode > 0)
+        {
+            await LogService.ErrorAsync("Error from AutoArchiveLog Service: InsertProviderResult - ",
+                criteria.ErrMsg);
+        }
     }
 }

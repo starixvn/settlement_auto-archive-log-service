@@ -2,12 +2,12 @@
 <Functions>
 	<Function Name="ArchiveData_Weekly_Report">
 		<Setting Key="ArchiveService_Setting_Sel" SpName="ArchiveService_Setting_Sel" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
-		<Setting Key="ArchiveService_Setting_Sel_DBACC" SpName="ArchiveService_Setting_Sel" DbName="DBACC.bodb02.wsv_nap" />
+		<Setting Key="ArchiveService_Setting_Sel_DBARC" SpName="ArchiveService_Setting_Sel" DbName="DBARC.bodb_Archive.wsv_nap" />
 
 		<Setting Key="ArchiveService_Ins" SpName="ArchiveService_Ins" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
 		<Setting Key="ArchiveService_Sel" SpName="ArchiveService_Sel" DbName="DBPRO.bodb02.wsv_nap" />
 		<Setting Key="NAP_Set_Service_ArchiveData_Sel" SpName="NAP_Set_Service_ArchiveData_Sel" DbName="DBPRO.bodb02.wsv_nap" />
-		<Setting Key="NAP_Set_Service_ArchiveData_Ins" SpName="NAP_Set_Service_ArchiveData_Ins" DbName="DBACC.bodb02.wsv_nap" />
+		<Setting Key="NAP_Set_Service_ArchiveData_Ins" SpName="NAP_Set_Service_ArchiveData_Ins" DbName="DBARC.bodb_Archive.wsv_nap" />
 	</Function>
 
 	<Function Name="ArchiveData_Log">

@@ -23,8 +23,8 @@ public class ArchiveLogJob(
             var isMaintenance = await maintenanceService.IsUnderMaintenanceAsync();
             if (!isMaintenance)
             {
-                //await archiveLogService.HandleArchiveLogData();
-                //await archiveReportService.HandleArchiveReportData();
+                await archiveLogService.HandleArchiveLogData();
+                await archiveReportService.HandleArchiveReportData();
                 await syncProviderHandler.Handle();
             }
         }
