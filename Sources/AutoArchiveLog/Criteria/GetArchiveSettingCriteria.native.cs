@@ -12,7 +12,7 @@ public class GetArchiveSettingCriteria : CriteriaBase
 
     public override string GetSettingKey() => DbServer switch
     {
-        "DACC" => "ArchiveService_Setting_Sel_DACC",
+        "DBARC" => "ArchiveService_Setting_Sel_DBARC",
         _ => "ArchiveService_Setting_Sel",
     };
 }

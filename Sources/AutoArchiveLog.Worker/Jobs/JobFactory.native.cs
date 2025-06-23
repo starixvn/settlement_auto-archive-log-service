@@ -11,8 +11,7 @@ public static class JobConfigurations
                 typeof(ArchiveLogJob),
                 "AutoArchiveLogJob",
                 "AutoArchiveLogJobTrigger",
-                //string.Format(CronExpressionJob.AutoArchiveLog, configuration.GetSection("HoursRunning").Value)
-                CronExpressionJob.AutoArchiveLogEvery4Seconds
+                string.Format(CronExpressionJob.AutoArchiveLog, configuration.GetSection("HoursRunning").Value)
             )];
 
         return jobs;

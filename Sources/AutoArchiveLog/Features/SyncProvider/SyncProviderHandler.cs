@@ -10,7 +10,9 @@ public interface ISyncProviderHandler
     Task Handle();
 }
 
-public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDataRepository reportDataRepository) : ISyncProviderHandler
+public class SyncProviderHandler(
+    IDynamicRepository dynamicRepository,
+    ReportDataRepository reportDataRepository) : ISyncProviderHandler
 {
     public async Task Handle()
     {
@@ -24,11 +26,12 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
     private async Task ProcessSyncProviderResult(ArchiveSetting archiveSetting)
     {
         var running = false;
-        while (!running)
+        var result = true;
+        while (!running && result)
         {
             var providerResult = await GetProviderResults(archiveSetting);
 
-            await InsertProviderResult(providerResult);
+            result = await InsertProviderResult(providerResult);
 
             var newArchiveSettings = await reportDataRepository.GetSetting();
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
@@ -55,11 +58,11 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
         };
     }
 
-    private async Task InsertProviderResult(LogData log)
+    private async Task<bool> InsertProviderResult(LogData log)
     {
         if (log.JsonInfo == null)
         {
-            return;
+            return true;
         }
 
         var criteria = new InsProviderResultCriteria
@@ -71,8 +74,10 @@ public class SyncProviderHandler(IDynamicRepository dynamicRepository, ReportDat
 
         if (criteria.ErrCode > 0)
         {
-            await LogService.ErrorAsync("Error from AutoArchiveLog Service: InsertProviderResult - ",
-                criteria.ErrMsg);
+            await LogService.ErrorAsync("Error from AutoArchiveLog Service: InsertProviderResult - ", criteria.ErrMsg);
+            return false;
         }
+
+        return true;
     }
 }
