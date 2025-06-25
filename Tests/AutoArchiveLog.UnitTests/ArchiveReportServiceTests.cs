@@ -13,7 +13,7 @@ public class ArchiveReportServiceTests
 {
     private readonly ReportDataRepository reportDataRepository;
 
-    private readonly ArchiveReportService service;
+    private readonly ArchiveReportServiceImp service;
 
     public ArchiveReportServiceTests()
     {
@@ -21,7 +21,7 @@ public class ArchiveReportServiceTests
 
         var sentryEngineOptions = new SentryEngineOptions
         {
-            Dsn = new Dsn("http://2dfee6c5bbc844558ad3bef5f4b59ee1@10.18.200.131:800/9")
+            Dsn = new Dsn("http://2dfee6c5bbc844558ad3bef5f4b59ee1@sentry.nexdev.net/9")
         };
         logEngine.Add(new SentryLogging(sentryEngineOptions));
 

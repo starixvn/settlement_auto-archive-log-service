@@ -1,4 +1,5 @@
-﻿using AutoArchiveLog.Services;
+﻿using AutoArchiveLog.Features.SyncProvider;
+using AutoArchiveLog.Services;
 using Fanex.Logging;
 using Fanex.Logging.Extensions;
 using Fanex.Logging.Extensions.Database;
@@ -11,6 +12,7 @@ namespace AutoArchiveLog.Worker.Jobs;
 public class ArchiveLogJob(
     ArchiveLogService archiveLogService,
     ArchiveReportService archiveReportService,
+    ISyncProviderHandler syncProviderHandler,
     IMaintenanceService maintenanceService)
     : IJob
 {
@@ -23,6 +25,7 @@ public class ArchiveLogJob(
             {
                 await archiveLogService.HandleArchiveLogData();
                 await archiveReportService.HandleArchiveReportData();
+                await syncProviderHandler.Handle();
             }
         }
         catch (Exception exception)
