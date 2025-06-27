@@ -89,9 +89,6 @@ public class SyncProviderHandler(
         };
         await dynamicRepository.ExecuteAsync(criteria);
 
-        await LogService
-.InfoAsync($"SyncProviderHandler - Done InsertProviderResult {JsonSerializer.Serialize(log)} at {DateTimeOffset.Now}");
-
         if (criteria.ErrCode > 0)
         {
             await LogService.ErrorAsync("Error from AutoArchiveLog Service: InsertProviderResult - ", criteria.ErrMsg);
