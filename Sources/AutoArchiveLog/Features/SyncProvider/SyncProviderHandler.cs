@@ -3,7 +3,6 @@ using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Fanex.Logging;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace AutoArchiveLog.Features.SyncProvider;
 
@@ -34,22 +33,15 @@ public class SyncProviderHandler(
         {
             var providerResult = await GetProviderResults(archiveSetting);
 
-            logger.LogInformation($"SyncProviderHandler - Processing {archiveSetting.ArchiveName} with last value {archiveSetting.ArchiveValue}");
-
-
             result = await InsertProviderResult(providerResult);
 
             var newArchiveSettings = await reportDataRepository.GetSetting("DBARC");
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
 
-            logger.LogInformation($"SyncProviderHandler - Processing newArchiveValue {newArchiveValue}");
 
             archiveSetting.ArchiveValue = newArchiveValue;
 
             running = providerResult.JsonInfo == null;
-
-            logger.LogInformation($"SyncProviderHandler - Done Processing {archiveSetting.ArchiveName} with last value {archiveSetting.ArchiveValue} providerResult {running} {result}");
-
         }
     }
 
@@ -62,7 +54,6 @@ public class SyncProviderHandler(
             Date = DateTimeOffset.Now.Date
         };
 
-        logger.LogInformation($"SyncProviderHandler - Processing GetProviderResults {JsonSerializer.Serialize(criteria)}");
 
         await dynamicRepository.ExecuteAsync(criteria);
 
@@ -75,8 +66,6 @@ public class SyncProviderHandler(
 
     private async Task<bool> InsertProviderResult(LogData log)
     {
-        logger.LogInformation($"SyncProviderHandler - InsertProviderResult {log.TableName} {log.JsonInfo?.Length} at {DateTimeOffset.Now}");
-
         if (log.JsonInfo == null)
         {
             return true;
