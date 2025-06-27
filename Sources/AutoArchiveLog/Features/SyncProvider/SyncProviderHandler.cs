@@ -39,7 +39,7 @@ public class SyncProviderHandler(
 
             result = await InsertProviderResult(providerResult);
 
-            var newArchiveSettings = await reportDataRepository.GetSetting();
+            var newArchiveSettings = await reportDataRepository.GetSetting("DBARC");
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
 
             logger.LogInformation($"SyncProviderHandler - Processing newArchiveValue {newArchiveValue}");
