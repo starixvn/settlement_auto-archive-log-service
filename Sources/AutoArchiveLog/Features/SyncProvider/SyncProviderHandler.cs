@@ -2,6 +2,8 @@
 using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Fanex.Logging;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace AutoArchiveLog.Features.SyncProvider;
 
@@ -12,7 +14,8 @@ public interface ISyncProviderHandler
 
 public class SyncProviderHandler(
     IDynamicRepository dynamicRepository,
-    ReportDataRepository reportDataRepository) : ISyncProviderHandler
+    ReportDataRepository reportDataRepository,
+    ILogger<SyncProviderHandler> logger) : ISyncProviderHandler
 {
     public async Task Handle()
     {
@@ -31,13 +34,22 @@ public class SyncProviderHandler(
         {
             var providerResult = await GetProviderResults(archiveSetting);
 
+            logger.LogInformation($"SyncProviderHandler - Processing {archiveSetting.ArchiveName} with last value {archiveSetting.ArchiveValue}");
+
+
             result = await InsertProviderResult(providerResult);
 
             var newArchiveSettings = await reportDataRepository.GetSetting();
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
+
+            logger.LogInformation($"SyncProviderHandler - Processing newArchiveValue {newArchiveValue}");
+
             archiveSetting.ArchiveValue = newArchiveValue;
 
             running = providerResult.JsonInfo == null;
+
+            logger.LogInformation($"SyncProviderHandler - Done Processing {archiveSetting.ArchiveName} with last value {archiveSetting.ArchiveValue} providerResult {running} {result}");
+
         }
     }
 
@@ -47,8 +59,11 @@ public class SyncProviderHandler(
         {
             TableName = setting.ArchiveName,
             LastValue = setting.ArchiveValue,
-            Date = DateTimeOffset.Now.AddDays(-1).Date
+            Date = DateTimeOffset.Now.Date
         };
+
+        logger.LogInformation($"SyncProviderHandler - Processing GetProviderResults {JsonSerializer.Serialize(criteria)}");
+
         await dynamicRepository.ExecuteAsync(criteria);
 
         return new LogData
@@ -60,6 +75,8 @@ public class SyncProviderHandler(
 
     private async Task<bool> InsertProviderResult(LogData log)
     {
+        logger.LogInformation($"SyncProviderHandler - InsertProviderResult {log.TableName} {log.JsonInfo?.Length} at {DateTimeOffset.Now}");
+
         if (log.JsonInfo == null)
         {
             return true;
@@ -71,6 +88,9 @@ public class SyncProviderHandler(
             JsonInfo = log.JsonInfo
         };
         await dynamicRepository.ExecuteAsync(criteria);
+
+        await LogService
+.InfoAsync($"SyncProviderHandler - Done InsertProviderResult {JsonSerializer.Serialize(log)} at {DateTimeOffset.Now}");
 
         if (criteria.ErrCode > 0)
         {
