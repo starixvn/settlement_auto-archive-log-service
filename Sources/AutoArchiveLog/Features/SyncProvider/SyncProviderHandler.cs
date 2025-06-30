@@ -2,7 +2,6 @@
 using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Fanex.Logging;
-using Microsoft.Extensions.Logging;
 
 namespace AutoArchiveLog.Features.SyncProvider;
 
@@ -13,8 +12,7 @@ public interface ISyncProviderHandler
 
 public class SyncProviderHandler(
     IDynamicRepository dynamicRepository,
-    ReportDataRepository reportDataRepository,
-    ILogger<SyncProviderHandler> logger) : ISyncProviderHandler
+    ReportDataRepository reportDataRepository) : ISyncProviderHandler
 {
     public async Task Handle()
     {
@@ -37,7 +35,6 @@ public class SyncProviderHandler(
 
             var newArchiveSettings = await reportDataRepository.GetSetting("DBARC");
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
-
 
             archiveSetting.ArchiveValue = newArchiveValue;
 
