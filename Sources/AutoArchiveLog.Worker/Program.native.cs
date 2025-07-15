@@ -7,12 +7,13 @@ using ONEbook.UM.DependencyInjection;
 using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
-builder.Services.AddHealthChecks();
+services.AddHealthChecks();
 
-builder.Services.Configure<AppSettings>(builder.Configuration);
+services.Configure<AppSettings>(builder.Configuration);
 
-builder.Services.AddQuartz(q =>
+services.AddQuartz(q =>
 {
     var jobs = JobConfigurations.GetJobs(builder.Configuration);
     foreach (var job in jobs)
@@ -28,19 +29,18 @@ builder.Services.AddQuartz(q =>
     }
 });
 
-builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
-builder.Services.AddOneBookUm(builder.Configuration);
+services.AddOneBookUmForService(builder.Configuration);
 
-builder.Services.AddFanexLogSentry(builder.Configuration);
+services.AddFanexLogSentry(builder.Configuration);
 
-builder.Services.AddFanexSql(builder.Configuration);
+services.AddFanexSql(builder.Configuration);
 
 builder.AddAutoArchiveLog();
 
-
 var app = builder.Build();
 
-app.MapHealthChecks("/");
+app.MapHealthChecks("/healthz");
 
 app.Run();

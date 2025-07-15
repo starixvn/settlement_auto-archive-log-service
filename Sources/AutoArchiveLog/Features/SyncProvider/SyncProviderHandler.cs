@@ -1,4 +1,5 @@
-﻿using AutoArchiveLog.Models;
+﻿using AutoArchiveLog.Constants;
+using AutoArchiveLog.Models;
 using AutoArchiveLog.Services;
 using Fanex.Data.Repository;
 using Fanex.Logging;
@@ -16,7 +17,7 @@ public class SyncProviderHandler(
 {
     public async Task Handle()
     {
-        var archiveSettings = await reportDataRepository.GetSetting("DBARC");
+        var archiveSettings = await reportDataRepository.GetSetting(DatabaseName.DBARC);
         foreach (var item in archiveSettings)
         {
             await ProcessSyncProviderResult(item);
@@ -33,7 +34,7 @@ public class SyncProviderHandler(
 
             result = await InsertProviderResult(providerResult);
 
-            var newArchiveSettings = await reportDataRepository.GetSetting("DBARC");
+            var newArchiveSettings = await reportDataRepository.GetSetting(DatabaseName.DBARC);
             var newArchiveValue = newArchiveSettings.Find(i => i.ArchiveName.Equals(archiveSetting.ArchiveName)).ArchiveValue;
 
             archiveSetting.ArchiveValue = newArchiveValue;
