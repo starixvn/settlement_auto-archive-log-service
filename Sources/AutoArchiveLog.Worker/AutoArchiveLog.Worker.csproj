@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appsettings.KLDR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="appsettings.PROD.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
 <None Include="appsettings.KLPROD.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
