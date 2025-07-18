@@ -9,8 +9,6 @@ public class GetLogDataCriteria : NonQueryCommand
 
     public string TableName { get; set; } = string.Empty;
 
-    public DateTime Date { get; set; }
-
     [SpParam(Ignored = true)]
     public string DbServer { get; set; } = string.Empty;
 

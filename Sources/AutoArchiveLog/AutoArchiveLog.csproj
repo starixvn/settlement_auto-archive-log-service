@@ -5,13 +5,18 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Models\AppSettings.native.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fanex.Data.Repository" Version="4.3.4.3" />
-    <PackageReference Include="Fanex.Data.SqlServer" Version="4.3.4.3" />
+    <PackageReference Include="Fanex.Caching.Redis" Version="2.2.8" />
+    <PackageReference Include="Fanex.Data.Repository" Version="4.3.4.4" />
+    <PackageReference Include="Fanex.Data.SqlServer" Version="4.3.4.4" />
     <PackageReference Include="Fanex.Logging" Version="2.0.2" />
     <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
+    <PackageReference Include="Fanex.SiteDbConnectionManager.Client" Version="1.0.1" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.14.0" />
   </ItemGroup>
 </Project>

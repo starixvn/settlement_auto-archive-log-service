@@ -1,6 +1,6 @@
 ﻿using AutoArchiveLog.Criteria;
 using AutoArchiveLog.Models;
-using Microsoft.Extensions.Options;
+using Fanex.SiteDbConnectionManager.Client.Services;
 
 namespace AutoArchiveLog.Services;
 
@@ -11,7 +11,9 @@ public interface InsertLogService
     Task<bool> InsertLog(LogData log);
 }
 
-public class InsertLogServiceImp(LogDataRepository logDataRepository, IOptions<AppSettings> appSettings) : InsertLogService
+public class InsertLogServiceImp(
+    LogDataRepository logDataRepository,
+    SiteDbClientService siteDbClientService) : InsertLogService
 {
     public async Task<bool> InsertLog(LogData log)
     {
@@ -24,7 +26,7 @@ public class InsertLogServiceImp(LogDataRepository logDataRepository, IOptions<A
             return false;
         }
 
-        await logDataRepository.DelLogData(log);
+        await logDataRepository.UpdateLogData(log);
 
         return true;
     }
@@ -32,14 +34,13 @@ public class InsertLogServiceImp(LogDataRepository logDataRepository, IOptions<A
     public async Task<List<LogData>> GetLogDataFromTable(string tableName)
     {
         var lists = new List<LogData>();
-
-        foreach (var server in appSettings.Value.SiteDbServer)
+        var sitesDb = await siteDbClientService.GetActiveSiteDbAsync();
+        foreach (var site in sitesDb)
         {
             var criteria = new GetLogDataCriteria
             {
                 TableName = tableName,
-                DbServer = server,
-                Date = DateTimeOffset.Now.AddDays(-1).Date,
+                DbServer = site.SiteName
             };
 
             var results = await logDataRepository.GetLogData(criteria);
