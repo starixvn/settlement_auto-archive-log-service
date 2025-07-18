@@ -10,9 +10,7 @@ public static class JobConfigurations
             new JobConfiguration(
                 typeof(ArchiveLogJob),
                 "AutoArchiveLogJob",
-                "AutoArchiveLogJobTrigger",
-                string.Format(CronExpressionJob.AutoArchiveLog, configuration.GetSection("HoursRunning").Value)
-            )];
+                "AutoArchiveLogJobTrigger",CronExpressionJob.AutoArchiveLog)];
 
         return jobs;
     }
