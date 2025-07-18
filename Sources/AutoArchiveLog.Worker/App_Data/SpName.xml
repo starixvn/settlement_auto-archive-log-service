@@ -15,11 +15,11 @@
 			<Setting Key="NAP_Set_ArchiveDataIns" SpName="NAP_Set_ArchiveDataIns" DbName="DBLOG.bodb_CustomerLog_archive.wsv_nap" />
 		</Function>
 
-		<Function Name="NAP_Set_ArchiveDataDel">
-			<Setting Key="NAP_Set_ArchiveDataDel_DBTXN" SpName="NAP_Set_ArchiveDataDel" DbName="DBTXN.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE01" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE01.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE02" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE02.bodb02.wsv_nap" />
-			<Setting Key="NAP_Set_ArchiveDataDel_DBSITE03" SpName="NAP_Set_ArchiveDataDel" DbName="DBSITE03.bodb02.wsv_nap" />
+		<Function Name="NAP_Set_ArchiveDataSystemSettings_Upd">
+			<Setting Key="NAP_Set_ArchiveDataSystemSettings_Upd_DBTXN" SpName="NAP_Set_ArchiveDataSystemSettings_Upd" DbName="DBTXN.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSystemSettings_Upd_DBSITE01" SpName="NAP_Set_ArchiveDataSystemSettings_Upd" DbName="DBSITE01.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSystemSettings_Upd_DBSITE02" SpName="NAP_Set_ArchiveDataSystemSettings_Upd" DbName="DBSITE02.bodb02.wsv_nap" />
+			<Setting Key="NAP_Set_ArchiveDataSystemSettings_Upd_DBSITE03" SpName="NAP_Set_ArchiveDataSystemSettings_Upd" DbName="DBSITE03.bodb02.wsv_nap" />
 		</Function>
 
 		<Function Name="NAP_Set_ArchiveDataSel">

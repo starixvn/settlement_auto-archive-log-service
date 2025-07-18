@@ -7,7 +7,7 @@ namespace AutoArchiveLog.Services;
 
 public interface LogDataRepository
 {
-    Task DelLogData(LogData log);
+    Task UpdateLogData(LogData log);
 
     Task<LogData> GetLogData(GetLogDataCriteria criteria);
 
@@ -30,9 +30,9 @@ public class LogDataRepositoryImp(IDynamicRepository dynamicRepository) : LogDat
         };
     }
 
-    public async Task DelLogData(LogData log)
+    public async Task UpdateLogData(LogData log)
     {
-        var criteria = new DelLogDataCriteria
+        var criteria = new UpdateLogDataCriteria
         {
             TableName = log.TableName,
             JsonInfo = log.JsonInfo,

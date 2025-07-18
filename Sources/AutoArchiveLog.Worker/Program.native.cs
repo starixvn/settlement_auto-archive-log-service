@@ -1,8 +1,9 @@
 ﻿using AutoArchiveLog;
-using AutoArchiveLog.Models;
+using AutoArchiveLog.Worker;
 using AutoArchiveLog.Worker.Jobs;
 using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
+using Fanex.SiteDbConnectionManager.Client;
 using ONEbook.UM.DependencyInjection;
 using Quartz;
 
@@ -10,8 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddHealthChecks();
-
-services.Configure<AppSettings>(builder.Configuration);
 
 services.AddQuartz(q =>
 {
@@ -36,6 +35,10 @@ services.AddOneBookUmForService(builder.Configuration);
 services.AddFanexLogSentry(builder.Configuration);
 
 services.AddFanexSql(builder.Configuration);
+
+services.AddRedisCacheConfig(builder.Configuration);
+
+services.AddSiteDbConnectionManager();
 
 builder.AddAutoArchiveLog();
 

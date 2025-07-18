@@ -1,7 +1,8 @@
 ﻿using AutoArchiveLog.Criteria;
 using AutoArchiveLog.Models;
 using AutoArchiveLog.Services;
-using Microsoft.Extensions.Options;
+using Fanex.SiteDbConnectionManager.Client.Models;
+using Fanex.SiteDbConnectionManager.Client.Services;
 using NSubstitute;
 using Xunit;
 
@@ -11,18 +12,14 @@ public class InsertLogServiceTest
 {
     private readonly LogDataRepository logDataRepository;
 
-    private readonly InsertLogService service;
+    private readonly InsertLogServiceImp service;
 
     public InsertLogServiceTest()
     {
-        var settings = new AppSettings()
-        {
-            SiteDbServer = new[] { "Local", "PRO" }
-        };
-
-        var settingsOptions = Options.Create(settings);
         logDataRepository = Substitute.For<LogDataRepository>();
-        service = new InsertLogServiceImp(logDataRepository, settingsOptions);
+        var siteDbClientService = Substitute.For<SiteDbClientService>();
+        siteDbClientService.GetActiveSiteDbAsync().Returns([new SiteDb { SiteName = "SiteDB1", SiteDbGroupId = 1 }]);
+        service = new InsertLogServiceImp(logDataRepository, siteDbClientService);
     }
 
     [Fact]
@@ -33,7 +30,7 @@ public class InsertLogServiceTest
         var logData = new LogData();
         var actual = await service.InsertLog(logData);
 
-        await logDataRepository.DidNotReceive().DelLogData(Arg.Any<LogData>());
+        await logDataRepository.DidNotReceive().UpdateLogData(Arg.Any<LogData>());
         Assert.False(actual);
     }
 
@@ -45,7 +42,7 @@ public class InsertLogServiceTest
         var logData = new LogData();
         var actual = await service.InsertLog(logData);
 
-        await logDataRepository.Received().DelLogData(Arg.Any<LogData>());
+        await logDataRepository.Received().UpdateLogData(Arg.Any<LogData>());
         Assert.True(actual);
     }
 

@@ -23,10 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fanex.Caching.Redis" Version="2.2.8" />
     <PackageReference Include="Fanex.Logging" Version="2.0.2" />
     <PackageReference Include="Fanex.Logging.Extensions" Version="2.0.2.1" />
     <PackageReference Include="Fanex.Logging.Extensions.Database" Version="2.0.2.1" />
     <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
+    <PackageReference Include="Fanex.SiteDbConnectionManager.Client" Version="1.0.1-alpha03" />
     <PackageReference Include="ONEbook.UM" Version="3.2.6" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.14.0" />
   </ItemGroup>
