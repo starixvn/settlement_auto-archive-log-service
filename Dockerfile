@@ -7,7 +7,7 @@ COPY ./Sources/AutoArchiveLog.Worker/AutoArchiveLog.Worker.csproj ./AutoArchiveL
 WORKDIR /src/AutoArchiveLog.Worker
 RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
 RUN --mount=type=cache,target=/root/.nuget/packages \ 
-dotnet restore -r linux-x64 Sources/AutoArchiveLog.Worker/AutoArchiveLog.Worker.csproj
+	dotnet restore -v n
 
 COPY ./Sources/AutoArchiveLog.Worker .
 
